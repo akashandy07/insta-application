@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+
 import {
     Send,
     MoreHorizontal,
@@ -10,6 +11,7 @@ import {
 const UserProfile = () => {
     const storedUser = JSON.parse(localStorage.getItem('user'))
     const followingList = storedUser?.followingList || []
+   
 
     const [showPosts, setShowPosts] = useState(false)
     const [showReels, setShowReels] = useState(false)
