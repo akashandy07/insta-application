@@ -4,11 +4,13 @@ import { useFollowLogics } from "../custom/FollowLogics";
 import { Reels } from "../data/Reels";
 import { Heart, MessageCircle } from "lucide-react";
 import { useLikeLogic } from "../custom/LikeLogic";
+import SuggestionPage from "./SuggestionPage";
 
 const ProfilePage = () => {
     const { data, toggleFollow } = useFollowLogics();
     const { id } = useParams();
     const { postData, likeButton } = useLikeLogic();
+    const [show, setShow] = useState(false)
     const navigate = useNavigate();
 
     const user = data.find(
@@ -155,6 +157,7 @@ const ProfilePage = () => {
 
                                 <button
                                     className="px-8 py-1.5 bg-gray-200 text-black font-semibold rounded text-sm w-[40px]"
+                                    onClick={() => setShow(true)}
                                 >
                                     +
                                 </button>
@@ -167,8 +170,17 @@ const ProfilePage = () => {
                         </p>
                     )}
 
+
                 </div>
 
+            </div>
+            <div >
+                {show &&
+                    <SuggestionPage />
+                    
+                }
+                
+                
             </div>
 
             {/* ================= TABS ================= */}
@@ -182,11 +194,10 @@ const ProfilePage = () => {
                         <button
                             key={key}
                             onClick={() => setActiveTab(key)}
-                            className={`flex-1 py-3 text-sm font-semibold uppercase tracking-wider ${
-                                activeTab === key
-                                    ? "text-black border-b-2 border-black"
-                                    : "text-gray-600"
-                            }`}
+                            className={`flex-1 py-3 text-sm font-semibold uppercase tracking-wider ${activeTab === key
+                                ? "text-black border-b-2 border-black"
+                                : "text-gray-600"
+                                }`}
                         >
                             {label}
                         </button>

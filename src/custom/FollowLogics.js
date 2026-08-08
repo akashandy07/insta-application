@@ -34,7 +34,7 @@ export const useFollowLogics = () => {
         const currentList = storedUser.followingList || []
         const updatedList = wasFollowing
             ? currentList.filter((u) => u.id !== target.id)
-            : [...currentList, { id: target.id, username: target.username }]
+            : [...currentList, { id: target.id, username: target.username, avatar: target.avatar, name: target.name }]
 
         const updatedUser = {
             ...storedUser,

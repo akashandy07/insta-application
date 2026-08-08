@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
+import ShowFollow from './ShowFollow';
 import {
     Send,
     MoreHorizontal,
@@ -7,16 +7,13 @@ import {
     Menu,
     User
 } from "lucide-react";
-
+import { useNavigate } from 'react-router-dom';
 const UserProfile = () => {
     const storedUser = JSON.parse(localStorage.getItem('user'))
+    const [activeTab, setActiveTab] = useState();
+    const navigate = useNavigate()
     const followingList = storedUser?.followingList || []
-   
-
-    const [showPosts, setShowPosts] = useState(false)
-    const [showReels, setShowReels] = useState(false)
-    const [showProfile, setShowProfile] = useState(false)
-
+    console.log(followingList);
     const [image, setImage] = useState(null)
     const [preview, setPreview] = useState(null)
     const [hide, setHide] = useState(false)
@@ -68,7 +65,7 @@ const UserProfile = () => {
         <div className='w-[400px] mx-auto overflow-x-auto scrollbar-none '>
             <div className='max-w-[380px] mx-auto '>
 
-                {/* PROFILE VIEW — hidden while editing */}
+
                 {!hide &&
                     <>
                         <div className='flex gap-7 pt-7 max-w-[410px] mx-auto h-[90px]  '>
@@ -88,18 +85,18 @@ const UserProfile = () => {
                                 </div>
                                 <div className='flex gap-7 text-center  '>
                                     <div>
-                                        <h1>0</h1>
-                                        <h1>post</h1>
+                                        <h1 className='font-medium'>0</h1>
+                                        <h1 className='font-medium'>post</h1>
                                     </div>
 
                                     <div>
-                                        <h1>0</h1>
-                                        <h1>followers</h1>
+                                        <h1 className='font-medium'>0</h1>
+                                        <h1 className='font-medium'>followers</h1>
                                     </div>
 
-                                    <div>
-                                        <h2>{storedUser?.following || 0}</h2>
-                                        <h2>following</h2>
+                                    <div onClick={() => navigate("/ShowFollow")}>
+                                        <h2 className='font-medium'>{storedUser?.following || 0}</h2>
+                                        <h2 className=' font-medium'>following</h2>
                                     </div>
                                 </div>
                             </div>
@@ -115,22 +112,28 @@ const UserProfile = () => {
                             <button className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg w-[40px] hover:bg-blue-600"> +</button>
                         </div>
                         <div className='flex justify-between align-middle pt-6'>
-                            <button onClick={() => setShowPosts(!showPosts)}>
+                            <button>
                                 <Menu size={26} />
                             </button>
 
-                            <button onClick={() => setShowReels(!showReels)}>
+                            <button >
                                 <Clapperboard size={26} />
                             </button>
 
 
 
-                            <button onClick={() => setShowProfile(!showProfile)}>
+                            <button >
                                 <User size={26} />
                             </button>
                         </div>
                     </>
                 }
+
+                <div>
+
+
+                </div>
+
 
                 {/* EDIT FORM — takes over the full page while hide is true */}
                 {hide &&
@@ -211,6 +214,7 @@ const UserProfile = () => {
                 }
 
             </div>
+
         </div>
     )
 }

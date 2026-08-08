@@ -12,16 +12,17 @@ import UserProfile from './pages/UserProfile'
 import SearchPage from './pages/SearchPage'
 import SearchResult from './pages/SearchResult'
 import MessageInput from './pages/MessageInput'
+import ShowFollow from './pages/ShowFollow'
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('user'))
 
   return (
     <>
-      
-       
-      
-      
+
+
+
+
       <BrowserRouter>
         {isLoggedIn && <NavBar />}
         <Routes>
@@ -78,6 +79,11 @@ const App = () => {
           <Route path="/messages/:id" element={
             <ProtectedRoute>
               <MessageInput />
+            </ProtectedRoute>} />
+
+          <Route path="/ShowFollow" element={
+            <ProtectedRoute>
+              <ShowFollow />
             </ProtectedRoute>} />
 
         </Routes>
