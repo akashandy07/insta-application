@@ -41,13 +41,13 @@ const ProfilePage = () => {
     ];
 
     return (
-        <div className="w-[500px] mx-auto min-h-[100vh] bg-white overflow-x-auto scrollbar-none">
+        <div className="w-[400px] mx-auto min-h-[100vh] bg-white overflow-x-auto scrollbar-none">
 
             {/* ================= PROFILE HEADER ================= */}
 
             <div className="border-b border-gray-300 pb-8">
 
-                <div className="max-w-[410px] mx-auto pt-8">
+                <div className="max-w-[380px] mx-auto pt-8">
 
                     {user ? (
                         <>
@@ -173,7 +173,7 @@ const ProfilePage = () => {
 
             {/* ================= TABS ================= */}
 
-            <div className="max-w-[410px] mx-auto border-b border-gray-300">
+            <div className="max-w-[380px] mx-auto border-b border-gray-300">
 
                 <div className="flex justify-between">
 
@@ -201,7 +201,7 @@ const ProfilePage = () => {
 
             {activeTab === "posts" && (
 
-                <div className="max-w-[410px] mx-auto py-8">
+                <div className="max-w-[380px] mx-auto py-8">
 
                     {getpost.length > 0 ? (
 
@@ -353,7 +353,7 @@ const ProfilePage = () => {
 
             {activeTab === "reels" && (
 
-                <div className="max-w-[410px] mx-auto py-8">
+                <div className="max-w-[380px] mx-auto py-8">
 
                     {userReels.length > 0 ? (
 
@@ -397,7 +397,7 @@ const ProfilePage = () => {
 
             {activeTab === "tagged" && (
 
-                <div className="max-w-[410px] mx-auto py-8">
+                <div className="max-w-[380px] mx-auto py-8">
 
                     <div className="flex justify-center items-center py-20">
 

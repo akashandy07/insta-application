@@ -8,8 +8,8 @@ const StoryPage = () => {
     const getUserById = (userId) => users.find(user => user.id === userId);
     const navigate = useNavigate()
     return (
-        <div className='w-[500px] mx-auto pt-5  overflow-x-auto hide-scrollbar '>
-            <div className='max-w-[410px] mx-auto'>
+        <div className='w-[400px] mx-auto pt-5  overflow-x-auto hide-scrollbar '>
+            <div className='max-w-[380px] mx-auto'>
 
                 <div className='flex justify-around overflow-x-auto gap-7 hide-scrollbar'>
                     {stories.map(i => {
@@ -18,7 +18,7 @@ const StoryPage = () => {
                         return (
                             <div key={i.id} className='flex flex-col items-center'>
                                 {/* ✅ SHOW AVATAR IMAGE */}
-                                <div className={`w-[85px] h-[85px] rounded-full border-2 flex-shrink-0 overflow-hidden ${i.seen
+                                <div className={`w-[85px] h-[85px] rounded-full border-4 flex-shrink-0 overflow-hidden ${i.seen
                                         ? 'border-gray-700'
                                         : 'border-pink-700'
                                     }`}>

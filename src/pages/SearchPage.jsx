@@ -26,8 +26,8 @@ const SearchPage = () => {
     };
 
     return (
-        <div className="w-[500px] min-h-[100vh] mx-auto pt-5 overflow-x-auto scrollbar-none">
-            <div className="max-w-[410px] mx-auto">
+        <div className="w-[400px] min-h-[100vh] mx-auto pt-5 overflow-x-auto scrollbar-none">
+            <div className="max-w-[380px] mx-auto">
                 <div className="flex items-center gap-3 mb-5  ">
                     <div className="flex-1 relative">
                         <Search className="absolute top-3 left-[90%] text-gray-400" size={20} />
@@ -42,7 +42,7 @@ const SearchPage = () => {
                 </div>
             </div>
             {input.trim() === "" ? (
-                <div className="max-w-[410px] mx-auto">
+                <div className="max-w-[380px] mx-auto">
                     <div>
                         <h2>hiii</h2> {/* Replace this with your Reels component later */}
                     </div>

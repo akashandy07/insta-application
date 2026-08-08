@@ -10,8 +10,8 @@ const MessagePage = () => {
 
   return (
     <>
-      <div className="w-[500px] h-auto mx-auto  overflow-y-auto overflow-x-auto scrollbar-none  ">
-        <div className="max-w-[410px] mx-auto">
+      <div className="w-[400px] h-auto mx-auto  overflow-y-auto overflow-x-auto scrollbar-none  ">
+        <div className="max-w-[380px] mx-auto">
 
           <div className="flex gap-6 items-end pt-3 overflow-x-auto scrollbar-none text-center">
             {Notes.map((i) => {
@@ -25,7 +25,7 @@ const MessagePage = () => {
                     <img
                       src={user?.avatar}
                       alt={user?.name}
-                      className="w-[12] h-[12] rounded-full object-cover "
+                      className="w-[60] h-[60] rounded-full object-cover "
                     />
                   </div>
                 </div>
@@ -36,8 +36,8 @@ const MessagePage = () => {
       </div>
 
 
-      <div className="w-[500px] h-auto mx-auto overflow-x-auto scrollbar-none">
-        <div className="max-w-[410px] mx-auto">
+      <div className="w-[400px] h-auto mx-auto overflow-x-auto scrollbar-none">
+        <div className="max-w-[380px] mx-auto">
           <div className="flex justify-between pt-6">
             <h1>Message</h1>
             <h1>Requests</h1>
@@ -47,8 +47,8 @@ const MessagePage = () => {
 
 
 
-      <div className="w-[500px] h-[500px] mx-auto overflow-y-auto pt-6 overflow-x-auto scrollbar-none">
-        <div className="max-w-[410px] mx-auto">
+      <div className="w-[400px] h-[500px] mx-auto overflow-y-auto pt-6 overflow-x-auto scrollbar-none">
+        <div className="max-w-[380px] mx-auto">
           <div className="flex flex-col ">
             {users.map((user) => (
               <div

@@ -13,10 +13,10 @@ const PostPage = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="w-[500px] mx-auto">
+        <div className="w-[400px] mx-auto">
             <StoryPage />
 
-            <div className="max-w-[410px] mx-auto mt-5 overflow-x-auto scrollbar-none">
+            <div className="max-w-[380px] mx-auto mt-5 overflow-x-auto scrollbar-none">
 
                 {postData.map((i) => {
                     const user = getUser(i.userId);

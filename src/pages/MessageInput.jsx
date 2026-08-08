@@ -32,10 +32,10 @@ const MessageInput = () => {
   }
 
   return (
-    <div className="w-[500px] mx-auto pt-4 h-[100vh] flex flex-col relative z-10 ">
+    <div className="w-[400px] mx-auto pt-4 h-[100vh] flex flex-col relative z-10 ">
       {/* Messages - scrollable */}
       <div className="flex-1 overflow-y-auto ">
-        <div className="max-w-[410px] mx-auto">
+        <div className="max-w-[380px] mx-auto">
           <div className="flex gap-4 items-center justify-between   ">
             <div className="flex items-center gap-3">
               <div>
@@ -80,9 +80,9 @@ const MessageInput = () => {
       </div>
 
       {/* Input - sticky */}
-      <div className="sticky bottom-20  bg-white pt-3 w-[500px] mx-auto">
-        <div className="w-[500px] mx-auto">
-          <div className="max-w-[410px] mx-auto">
+      <div className="sticky bottom-20  bg-white pt-3 w-[400px] mx-auto">
+        <div className="w-[400px] mx-auto">
+          <div className="max-w-[380px] mx-auto">
             <div className="flex gap-2">
               <input
                 type="text"

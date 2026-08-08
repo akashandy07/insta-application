@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom'
 const SearchResult = ({ input, showUser }) => {
     const navigate = useNavigate()
     return (
-        <div className="w-[500px] mx-auto min-h-[100vh] pt-5 overflow-x-auto scrollbar-none">
-            <div className='max-w-[410px] mx-auto'>
+        <div className="w-[400px] mx-auto min-h-[100vh] pt-5 overflow-x-auto scrollbar-none">
+            <div className='max-w-[380px] mx-auto'>
                 {input.trim() !== "" ? (
                     showUser.length > 0 ? (
                         <div >

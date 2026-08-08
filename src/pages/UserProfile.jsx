@@ -65,8 +65,8 @@ const UserProfile = () => {
     }
 
     return (
-        <div className='w-[500px] mx-auto overflow-x-auto scrollbar-none '>
-            <div className='max-w-[410px] mx-auto '>
+        <div className='w-[400px] mx-auto overflow-x-auto scrollbar-none '>
+            <div className='max-w-[380px] mx-auto '>
 
                 {/* PROFILE VIEW — hidden while editing */}
                 {!hide &&
