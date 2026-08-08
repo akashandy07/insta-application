@@ -20,8 +20,8 @@ const LoginPage = ({ setIsLoggedIn }) => {
     }
 
     return (
-        <div className="w-[500px] mx-auto h-[600px] flex items-center mb-10 pt-2 text-center">
-            <div className="max-w-[410px] mx-auto ">
+        <div className="w-[400px] mx-auto h-[600px] flex items-center mb-10 pt-2 text-center justify-center">
+            <div className="max-w-[380px] mx-auto ">
                 {/* Demo Credentials Box */}
                 <div className="bg-blue-50 border border-blue-300 rounded-lg p-4 mb-6">
                     <p className="text-sm font-semibold text-blue-900 mb-2">📝 Demo Credentials:</p>
@@ -53,7 +53,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
                         />
 
                         {/* Login Button */}
-                        <button 
+                        <button
                             type="submit"
                             className="bg-blue-500 text-white font-semibold py-2 rounded mt-2 hover:bg-blue-600 transition"
                         >

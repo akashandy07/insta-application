@@ -37,6 +37,7 @@ const PostPage = () => {
                                         navigate(`/ProfilePage/${user?.id}`)
                                     }
                                     className="w-10 h-10 rounded-full object-cover cursor-pointer"
+
                                 />
 
                                 <div>
@@ -56,6 +57,9 @@ const PostPage = () => {
                                 src={i.image}
                                 alt={i.caption}
                                 className="w-full h-auto object-cover rounded-lg"
+                                onClick={() =>
+                                    likeButton(user.id)
+                                }
                             />
 
                             {/* LIKE & COMMENT */}
