@@ -11,8 +11,9 @@ const NavBar = () => {
     return (
         <>
             {/* Top Header */}
-            <div className='w-[500px] mx-auto h-[56px] bg-white border-b border-gray-200 '>
-                <div className='flex justify-between items-center h-full max-w-[410px] mx-auto '>
+            <div className='w-[500px] mx-auto h-[80px] bg-white '>
+                
+                <div className='flex justify-between items-center h-full max-w-[410px] mx-auto border-b  border-gray-200 '>
                     {/* Plus Icon */}
                     <div className='cursor-pointer hover:opacity-70 transition'>
                         <Plus size={24} strokeWidth={2} />
@@ -38,8 +39,9 @@ const NavBar = () => {
                 </div>
             </div>
 
+
             {/* Bottom Navigation */}
-            <div className="fixed bottom-0  w-[500px]  max-w-[410px] mx-auto bg-white border-t border-gray-200 z-50 left-[50%] translate-x-[-50%] ">
+            <div className="fixed bottom-0  w-[500px] h-[80px]  max-w-[410px] mx-auto bg-white border-t border-gray-200 z-50 left-[50%] translate-x-[-50%] ">
                 <div className='flex justify-around items-center py-5' >
 
 

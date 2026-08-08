@@ -3,7 +3,7 @@ import { users } from "../data/users";
 import { useNavigate } from "react-router-dom";
 import StoryPage from "./StoryPage";
 import { useLikeLogic } from "../custom/LikeLogic";
-
+import { Heart, MessageCircle } from "lucide-react";
 const PostPage = () => {
     const getUser = (userId) =>
         users.find((user) => user.id === userId);
@@ -59,18 +59,50 @@ const PostPage = () => {
                             />
 
                             {/* LIKE & COMMENT */}
-                            <div className="flex gap-4 mt-2 font-semibold">
+                            <div className="flex gap-5 pt-3">
 
-                                <button
-                                    onClick={() => likeButton(i.id)}
-                                    className="text-xl"
+                                {/* LIKE */}
+
+                                <div
+                                    className="flex items-center gap-1 cursor-pointer"
+                                    onClick={() =>
+                                        likeButton(i.id)
+                                    }
                                 >
-                                    {i.liked ? "❤️" : "🤍"} {i.likes}
-                                </button>
 
-                                <h1>
-                                    💬 {i.comments}
-                                </h1>
+                                    <Heart
+                                        size={20}
+                                        fill={
+                                            i.liked
+                                                ? "red"
+                                                : "none"
+                                        }
+                                        color={
+                                            i.liked
+                                                ? "red"
+                                                : "black"
+                                        }
+                                    />
+
+                                    <span className="text-sm font-semibold">
+                                        {i.likes}
+                                    </span>
+
+                                </div>
+
+                                {/* COMMENT */}
+
+                                <div className="flex items-center gap-1">
+
+                                    <MessageCircle
+                                        size={20}
+                                    />
+
+                                    <span className="text-sm font-semibold">
+                                        {i.comments}
+                                    </span>
+
+                                </div>
 
                             </div>
 

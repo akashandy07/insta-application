@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 const SearchResult = ({ input, showUser }) => {
     const navigate = useNavigate()
     return (
-        <div className="w-[500px] mx-auto pt-5 overflow-x-auto scrollbar-none">
+        <div className="w-[500px] mx-auto min-h-[100vh] pt-5 overflow-x-auto scrollbar-none">
             <div className='max-w-[410px] mx-auto'>
                 {input.trim() !== "" ? (
                     showUser.length > 0 ? (
@@ -28,6 +28,7 @@ const SearchResult = ({ input, showUser }) => {
                                             <h2 className="font-semibold">{user.name}</h2>
                                             <p className="text-gray-500 text-sm">@{user.username}</p>
                                         </div>
+                                        
                                     </div>
 
                                     <button onClick={() => navigate(`/messages/${user.id}`)} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">

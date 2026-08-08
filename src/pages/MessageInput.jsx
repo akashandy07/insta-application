@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { users } from "../data/users";
 import MessagePage from "./MessagePage";
+import { PhoneCallIcon } from "lucide-react";
+import { VideoIcon } from "lucide-react";
 
 const MessageInput = () => {
   const { id } = useParams();
@@ -30,19 +32,32 @@ const MessageInput = () => {
   }
 
   return (
-    <div className="w-[500px] mx-auto pt-7 h-[100vh] flex flex-col relative z-10 ">
+    <div className="w-[500px] mx-auto pt-4 h-[100vh] flex flex-col relative z-10 ">
       {/* Messages - scrollable */}
       <div className="flex-1 overflow-y-auto ">
         <div className="max-w-[410px] mx-auto">
-          <div className="flex gap-4 items-center  ">
-            <img
-              src={user?.avatar}
-              alt={user?.name}
-              className="w-16 h-16 rounded-full"
-            />
-            <div>
-              <h1 className="font-semibold">{user?.name}</h1>
-              <h1 className="font-semibold">{user?.username}</h1>
+          <div className="flex gap-4 items-center justify-between   ">
+            <div className="flex items-center gap-3">
+              <div>
+                <img
+                  src={user?.avatar}
+                  alt={user?.name}
+                  className="w-16 h-16 rounded-full"
+                />
+              </div>
+              <div>
+                <h1 className="font-semibold">{user?.name}</h1>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button className="p-2 rounded-full hover:bg-gray-100 transition">
+                <PhoneCallIcon size={22} />
+              </button>
+
+              <button className="p-2 rounded-full hover:bg-gray-100 transition">
+                <VideoIcon size={22} />
+              </button>
             </div>
           </div>
 

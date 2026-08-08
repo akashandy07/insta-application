@@ -26,7 +26,7 @@ const SearchPage = () => {
     };
 
     return (
-        <div className="w-[500px] mx-auto pt-5 overflow-x-auto scrollbar-none">
+        <div className="w-[500px] min-h-[100vh] mx-auto pt-5 overflow-x-auto scrollbar-none">
             <div className="max-w-[410px] mx-auto">
                 <div className="flex items-center gap-3 mb-5  ">
                     <div className="flex-1 relative">

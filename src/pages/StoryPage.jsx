@@ -18,7 +18,7 @@ const StoryPage = () => {
                         return (
                             <div key={i.id} className='flex flex-col items-center'>
                                 {/* ✅ SHOW AVATAR IMAGE */}
-                                <div className={`w-[70px] h-[70px] rounded-full border-2 flex-shrink-0 overflow-hidden ${i.seen
+                                <div className={`w-[85px] h-[85px] rounded-full border-2 flex-shrink-0 overflow-hidden ${i.seen
                                         ? 'border-gray-700'
                                         : 'border-pink-700'
                                     }`}>
