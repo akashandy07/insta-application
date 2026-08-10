@@ -27,10 +27,10 @@ const MessagePage = () => {
         <div className="max-w-[380px] mx-auto">
 
           {show && (
-            <div className="fixed bottom-20 z-30 flex items-start justify-center w-[400px] mx-auto">
-              <div className="bg-white h-[60vh] w-[380px] rounded-2xl p-10 shadow-[0_10px_40px_rgba(0,0,0,0.25)] ">
+            <div className=" fixed bottom-18 flex items-center justify-center z-30 overflow-y-auto">
+              <div className="bg-white h-[70vh] w-[380px]  pt-20  shadow-lg rounded-3xl ">
 
-                <div className="flex flex-col gap-4 ">
+                <div className="flex flex-col gap-4 p-10 ">
                   <input
                     type="text"
                     placeholder="Reply Your notes......."
@@ -60,7 +60,7 @@ const MessagePage = () => {
             </div>
           )}
 
-          <div className="flex gap-6 items-end pt-3 overflow-x-auto scrollbar-none text-center">
+          <div className="flex gap-10 items-end pt-3 overflow-x-auto scrollbar-none text-center">
             {Notes.map((i) => {
               const user = users.find((u) => u.id === i.userId);
               return (
@@ -85,7 +85,7 @@ const MessagePage = () => {
 
       <div className="w-[400px] h-auto mx-auto overflow-x-auto scrollbar-none z-0">
         <div className="max-w-[380px] mx-auto">
-          <div className="flex justify-between pt-6">
+          <div className="flex justify-between pt-8">
             <h1>Message</h1>
             <h1>Requests</h1>
           </div>
@@ -103,8 +103,8 @@ const MessagePage = () => {
                 onClick={() => navigate(`/messages/${user.id}`)}
                 className="cursor-pointer "
               >
-                <div className="flex gap-7 items-center pb-5  ">
-                  <img src={user.avatar} alt={user.name} className="w-12 h-12 rounded-full object-cover " />
+                <div className="flex gap-6 items-center pb-7  ">
+                  <img src={user.avatar} alt={user.name} className="w-18 h-18 rounded-full object-cover " />
                   <h2 >{user.name}</h2>
                 </div>
               </div>

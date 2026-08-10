@@ -14,10 +14,15 @@ const UserProfile = () => {
 
     const navigate = useNavigate();
 
+    // Edit form visibility
     const [hide, setHide] = useState(false);
+
+    // Active profile tab
+    const [activeTab, setActiveTab] = useState("posts");
 
     // Image states
     const [image, setImage] = useState(null);
+
     const [preview, setPreview] = useState(
         storedUser?.avatar || null
     );
@@ -35,6 +40,7 @@ const UserProfile = () => {
 
     // Handle text input changes
     const handleChange = (field, value) => {
+
         setForms((prev) =>
             prev.map((form, index) =>
                 index === 0
@@ -45,6 +51,7 @@ const UserProfile = () => {
                     : form
             )
         );
+
     };
 
     // Handle image upload
@@ -54,10 +61,8 @@ const UserProfile = () => {
 
         if (!file) return;
 
-        // Store File object
         setImage(file);
 
-        // Convert image to data URL
         const reader = new FileReader();
 
         reader.onloadend = () => {
@@ -74,12 +79,14 @@ const UserProfile = () => {
 
         const updatedUser = {
             ...storedUser,
-            id: Date.now(),
+
             name: forms[0].name,
             username: forms[0].username,
             pronouns: forms[0].pronouns,
             bio: forms[0].bio,
             links: forms[0].links,
+
+            // Save image as base64
             avatar: preview
         };
 
@@ -97,6 +104,7 @@ const UserProfile = () => {
     }
 
     return (
+
         <div className="w-[400px] mx-auto overflow-x-auto scrollbar-none">
 
             <div className="max-w-[380px] mx-auto">
@@ -105,9 +113,10 @@ const UserProfile = () => {
 
                 {!hide && (
                     <>
+
                         {/* PROFILE HEADER */}
 
-                        <div className="flex gap-7 pt-7 max-w-[410px] mx-auto items-center ">
+                        <div className="flex gap-7 pt-7 max-w-[410px] mx-auto items-center">
 
                             {/* PROFILE IMAGE */}
 
@@ -138,23 +147,26 @@ const UserProfile = () => {
 
                             </div>
 
+
                             {/* USER DETAILS */}
 
-                            <div className="flex flex-col  justify-between">
+                            <div className="flex flex-col justify-between items-start">
 
                                 <div>
 
-                                    <h1 className="font-semibold">
-                                        {forms[0].name}
-                                    </h1>
+                                    <p className="text-sm text-gray-500">
+                                        {forms[0].username}
+                                    </p>
 
                                 </div>
 
+
                                 {/* PROFILE COUNTS */}
 
-                                <div className="flex gap-5 text-center">
+                                <div className="flex gap-5 text-center mt-2">
 
                                     <div>
+
                                         <h1 className="font-medium">
                                             0
                                         </h1>
@@ -162,9 +174,12 @@ const UserProfile = () => {
                                         <h1 className="font-medium">
                                             posts
                                         </h1>
+
                                     </div>
 
+
                                     <div>
+
                                         <h1 className="font-medium">
                                             0
                                         </h1>
@@ -172,7 +187,9 @@ const UserProfile = () => {
                                         <h1 className="font-medium">
                                             followers
                                         </h1>
+
                                     </div>
+
 
                                     <div
                                         onClick={() =>
@@ -197,6 +214,7 @@ const UserProfile = () => {
 
                         </div>
 
+
                         {/* BIO */}
 
                         <div className="pt-3">
@@ -211,6 +229,7 @@ const UserProfile = () => {
 
                         </div>
 
+
                         {/* BUTTONS */}
 
                         <div className="flex gap-3 text-center pt-8">
@@ -222,11 +241,13 @@ const UserProfile = () => {
                                 Edit
                             </button>
 
+
                             <button
                                 className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg w-[170px] hover:bg-blue-600"
                             >
                                 Message
                             </button>
+
 
                             <button
                                 className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg w-[40px] hover:bg-blue-600"
@@ -236,26 +257,90 @@ const UserProfile = () => {
 
                         </div>
 
-                        {/* PROFILE TABS */}
 
-                        <div className="flex justify-between items-center pt-6">
+                        {/* ================= PROFILE TABS ================= */}
 
-                            <button>
+                        <div className="flex justify-between items-center pt-6 border-b">
+
+                            {/* POSTS */}
+
+                            <button
+                                onClick={() =>
+                                    setActiveTab("posts")
+                                }
+                                className={
+                                    activeTab === "posts"
+                                        ? "border-b-2 border-black pb-2"
+                                        : "pb-2"
+                                }
+                            >
                                 <Menu size={26} />
                             </button>
 
-                            <button>
+
+                            {/* REELS */}
+
+                            <button
+                                onClick={() =>
+                                    setActiveTab("reels")
+                                }
+                                className={
+                                    activeTab === "reels"
+                                        ? "border-b-2 border-black pb-2"
+                                        : "pb-2"
+                                }
+                            >
                                 <Clapperboard size={26} />
                             </button>
 
-                            <button>
+
+                            {/* TAGGED */}
+
+                            <button
+                                onClick={() =>
+                                    setActiveTab("tagged")
+                                }
+                                className={
+                                    activeTab === "tagged"
+                                        ? "border-b-2 border-black pb-2"
+                                        : "pb-2"
+                                }
+                            >
                                 <User size={26} />
                             </button>
 
                         </div>
 
+
+                        {/* ================= TAB CONTENT ================= */}
+
+                        <div className="flex justify-center items-center py-16">
+
+                            {activeTab === "posts" ? (
+
+                                <p className="text-gray-500">
+                                    No posts available
+                                </p>
+
+                            ) : activeTab === "reels" ? (
+
+                                <p className="text-gray-500">
+                                    No reels available
+                                </p>
+
+                            ) : (
+
+                                <p className="text-gray-500">
+                                    No tagged posts available
+                                </p>
+
+                            )}
+
+                        </div>
+
                     </>
                 )}
+
 
                 {/* ================= EDIT FORM ================= */}
 
@@ -290,6 +375,7 @@ const UserProfile = () => {
 
                             </div>
 
+
                             {/* NAME */}
 
                             <div className="flex gap-6 items-center">
@@ -312,6 +398,7 @@ const UserProfile = () => {
                                 />
 
                             </div>
+
 
                             {/* USERNAME */}
 
@@ -336,6 +423,7 @@ const UserProfile = () => {
 
                             </div>
 
+
                             {/* PRONOUNS */}
 
                             <div className="flex gap-6 items-center">
@@ -358,6 +446,7 @@ const UserProfile = () => {
                                 />
 
                             </div>
+
 
                             {/* BIO */}
 
@@ -382,6 +471,7 @@ const UserProfile = () => {
 
                             </div>
 
+
                             {/* LINKS */}
 
                             <div className="flex gap-6 items-center">
@@ -405,6 +495,7 @@ const UserProfile = () => {
 
                             </div>
 
+
                             {/* SUBMIT / CANCEL */}
 
                             <div className="flex gap-4 items-center">
@@ -416,9 +507,12 @@ const UserProfile = () => {
                                     Submit
                                 </button>
 
+
                                 <button
                                     type="button"
-                                    onClick={() => setHide(false)}
+                                    onClick={() =>
+                                        setHide(false)
+                                    }
                                     className="px-6 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
                                 >
                                     Cancel

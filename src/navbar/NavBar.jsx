@@ -12,7 +12,7 @@ const NavBar = () => {
     return (
         <>
             {/* Top Header */}
-            <div className='w-[400px] mx-auto h-[80px] bg-white '>
+            <div className='w-[400px] mx-auto h-[75px] bg-white '>
 
                 <div className='flex justify-between items-center h-full max-w-[380px] mx-auto border-b  border-gray-200 '>
                     {/* Plus Icon */}
@@ -42,7 +42,7 @@ const NavBar = () => {
 
 
             {/* Bottom Navigation */}
-            <div className="fixed bottom-0  w-[400px] h-[80px]  max-w-[380px] mx-auto bg-white border-t border-gray-200 z-50 left-[50%] translate-x-[-50%] ">
+            <div className="fixed bottom-0  w-[400px] h-[75px]  max-w-[380px] mx-auto bg-white border-t border-gray-200 z-50 left-[50%] translate-x-[-50%] ">
                 <div className='flex justify-around items-center py-5' >
 
 
@@ -121,6 +121,7 @@ const NavBar = () => {
 
                             }`}>
                             <img src={storedUser?.avatar} className='w-full h-full object-cover rounded-2xl '/>
+                            
                         </div>
                     </Link>
                 </div>

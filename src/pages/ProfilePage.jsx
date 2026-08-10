@@ -5,14 +5,18 @@ import { Reels } from "../data/Reels";
 import { Heart, MessageCircle } from "lucide-react";
 import { useLikeLogic } from "../custom/LikeLogic";
 import SuggestionPage from "./SuggestionPage";
+import { useCommentPage } from "../custom/CommentLogics";
 
+
+import {  X } from "lucide-react";
 const ProfilePage = () => {
     const { data, toggleFollow } = useFollowLogics();
     const { id } = useParams();
     const { postData, likeButton } = useLikeLogic();
     const [show, setShow] = useState(false)
     const navigate = useNavigate();
-
+    const [hide, setHide] = useState(null);
+    const { comments, postComment, setInput, input } = useCommentPage();
     const user = data.find(
         (i) => i.id === parseInt(id)
     );
@@ -24,6 +28,7 @@ const ProfilePage = () => {
     const getpost = postData.filter(
         (post) => post.userId === parseInt(id)
     );
+    const storedUser = JSON.parse(localStorage.getItem("user"));
 
     const [activeTab, setActiveTab] = useState("posts");
 
@@ -177,10 +182,10 @@ const ProfilePage = () => {
             <div >
                 {show &&
                     <SuggestionPage />
-                    
+
                 }
-                
-                
+
+
             </div>
 
             {/* ================= TABS ================= */}
@@ -301,17 +306,135 @@ const ProfilePage = () => {
 
                                         {/* COMMENT */}
 
-                                        <div className="flex items-center gap-1">
+                                        <div
+                                            className="flex items-center gap-1 cursor-pointer"
+                                            onClick={() =>
+                                                setHide(
+                                                    hide === p.id
+                                                        ? null
+                                                        : p.id
+                                                )
+                                            }
+                                        >
 
-                                            <MessageCircle
-                                                size={20}
-                                            />
+                                            <MessageCircle size={20} />
 
                                             <span className="text-sm font-semibold">
-                                                {p.comments}
+                                                {comments.find(post => post.id === p.id)?.comments?.length || 0}
                                             </span>
 
                                         </div>
+                                        {/* xxxxxxxxxxxxxxxxx */}
+
+                                        {hide === p.id && (
+
+                                            <div className=" fixed bottom-18 flex items-center justify-center z-30 overflow-y-auto">
+
+                                                <div className="bg-white w-[380px] h-[60vh]  rounded-xl p-5 shadow-lg">
+
+                                                    {/* HEADER */}
+
+                                                    <div className="flex items-center justify-between border-b pb-3">
+
+                                                        <h2 className="text-lg font-bold">
+                                                            Comments
+                                                        </h2>
+
+                                                        <button
+                                                            onClick={() =>
+                                                                setHide(null)
+                                                            }
+                                                        >
+                                                            <X size={22} />
+
+                                                        </button>
+
+                                                    </div>
+
+
+                                                    {/* COMMENTS */}
+
+                                                    <div className="mt-4 max-h-[400px] overflow-y-auto">
+
+                                                        {comments
+                                                            .find(
+                                                                (post) =>
+                                                                    post.id === p.id
+                                                            )
+                                                            ?.comments?.length > 0 ? (
+
+                                                            comments
+                                                                .find(
+                                                                    (post) =>
+                                                                        post.id === p.id
+                                                                )
+                                                                .comments.map(
+                                                                    (comment) => (
+
+                                                                        <div key={comment.id} className="py-2 border-b flex items-center gap-5">
+                                                                            <div>
+                                                                                <img
+                                                                                    src={storedUser?.avatar}
+                                                                                    alt={storedUser?.username}
+                                                                                    className="w-10 h-10 rounded-full object-cover"
+                                                                                />
+                                                                            </div>
+                                                                            <p className="text-sm">
+                                                                                {
+                                                                                    comment.text
+
+                                                                                }
+                                                                            </p>
+                                                                            <h1>{ }</h1>
+
+                                                                        </div>
+
+                                                                    )
+                                                                )
+
+                                                        ) : (
+
+                                                            <p className="text-gray-500 text-sm">
+                                                                No comments yet
+                                                            </p>
+
+                                                        )}
+
+                                                    </div>
+
+
+                                                    {/* INPUT */}
+
+                                                    <div className="flex gap-2 mt-4 h-1000px">
+
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Add a comment..."
+                                                            value={input}
+                                                            onChange={(e) =>
+                                                                setInput(
+                                                                    e.target.value
+                                                                )
+                                                            }
+                                                            className="flex-1 border rounded-lg px-3 py-2 outline-none"
+                                                        />
+
+                                                        <button
+                                                            onClick={() =>
+                                                                postComment(p.id)
+                                                            }
+                                                            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                                                        >
+                                                            Post
+                                                        </button>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        )}
 
                                     </div>
 

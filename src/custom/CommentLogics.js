@@ -1,13 +1,26 @@
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { posts } from "../data/posts";
 
 export const useCommentPage = () => {
+    const [comments, setComments] = useState(() => {
+        const savedComments = localStorage.getItem("comments");
 
-    const [comments, setComments] = useState(posts);
+        if (savedComments) {
+            return JSON.parse(savedComments);
+        }
+
+        return posts;
+    });
+
     const [input, setInput] = useState("");
 
-    function postComment(postId) {
+    // Save comments whenever comments change
+    useEffect(() => {
+        localStorage.setItem("comments", JSON.stringify(comments));
+    }, [comments]);
 
+    function postComment(postId) {
         if (!input.trim()) return;
 
         setComments((prev) =>
@@ -15,12 +28,10 @@ export const useCommentPage = () => {
                 post.id === postId
                     ? {
                         ...post,
-
                         comments: [
                             ...(Array.isArray(post.comments)
                                 ? post.comments
                                 : []),
-
                             {
                                 id: Date.now(),
                                 text: input,
@@ -41,3 +52,4 @@ export const useCommentPage = () => {
         input,
     };
 };
+
