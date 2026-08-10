@@ -1,222 +1,441 @@
-import React, { useState, useEffect } from 'react'
-import ShowFollow from './ShowFollow';
+
+import React, { useState } from "react";
 import {
-    Send,
-    MoreHorizontal,
     Clapperboard,
     Menu,
     User
 } from "lucide-react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+
 const UserProfile = () => {
-    const storedUser = JSON.parse(localStorage.getItem('user'))
-    const [activeTab, setActiveTab] = useState();
-    const navigate = useNavigate()
-    const followingList = storedUser?.followingList || []
-    console.log(followingList);
-    const [image, setImage] = useState(null)
-    const [preview, setPreview] = useState(null)
-    const [hide, setHide] = useState(false)
+
+    // Get user from localStorage
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    const navigate = useNavigate();
+
+    const [hide, setHide] = useState(false);
+
+    // Image states
+    const [image, setImage] = useState(null);
+    const [preview, setPreview] = useState(
+        storedUser?.avatar || null
+    );
+
+    // Form states
     const [forms, setForms] = useState([
         {
-            name: "",
-            username: "",
-            pronouns: "",
-            bio: "",
-            links: "",
+            name: storedUser?.name || "",
+            username: storedUser?.username || "",
+            pronouns: storedUser?.pronouns || "",
+            bio: storedUser?.bio || "",
+            links: storedUser?.links || "",
         }
     ]);
 
+    // Handle text input changes
     const handleChange = (field, value) => {
-        setForms(prev =>
-            prev.map((f, i) => (i === 0 ? { ...f, [field]: value } : f))
+        setForms((prev) =>
+            prev.map((form, index) =>
+                index === 0
+                    ? {
+                        ...form,
+                        [field]: value
+                    }
+                    : form
+            )
         );
     };
 
+    // Handle image upload
     function handleImageChange(e) {
-        const file = e.target.files[0]
-        if (!file) return
 
-        // delete/revoke the old preview before creating a new one
-        if (preview) {
-            URL.revokeObjectURL(preview)
-        }
+        const file = e.target.files[0];
 
-        setImage(file)
-        setPreview(URL.createObjectURL(file))
+        if (!file) return;
+
+        // Store File object
+        setImage(file);
+
+        // Convert image to data URL
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            setPreview(reader.result);
+        };
+
+        reader.readAsDataURL(file);
     }
 
-    // clean up the preview URL if the component unmounts
-    useEffect(() => {
-        return () => {
-            if (preview) URL.revokeObjectURL(preview)
-        }
-    }, [preview])
-
+    // Submit profile
     function handler(e) {
-        e.preventDefault()
-        console.log("Form data:", forms[0])
-        console.log("Image file:", image)
-        setHide(false) // close the form after submitting
-        // send forms[0] + image to your API here
+
+        e.preventDefault();
+
+        const updatedUser = {
+            ...storedUser,
+            id: Date.now(),
+            name: forms[0].name,
+            username: forms[0].username,
+            pronouns: forms[0].pronouns,
+            bio: forms[0].bio,
+            links: forms[0].links,
+            avatar: preview
+        };
+
+        // Save updated user
+        localStorage.setItem(
+            "user",
+            JSON.stringify(updatedUser)
+        );
+
+        // Close edit form
+        setHide(false);
+
+        console.log("Updated User:", updatedUser);
+        console.log("Image File:", image);
     }
 
     return (
-        <div className='w-[400px] mx-auto overflow-x-auto scrollbar-none '>
-            <div className='max-w-[380px] mx-auto '>
+        <div className="w-[400px] mx-auto overflow-x-auto scrollbar-none">
 
+            <div className="max-w-[380px] mx-auto">
 
-                {!hide &&
+                {/* ================= PROFILE ================= */}
+
+                {!hide && (
                     <>
-                        <div className='flex gap-7 pt-7 max-w-[410px] mx-auto h-[90px]  '>
-                            <div className='flex flex-col w-[120px]  '>
-                                <div onClick={() => setHide(!hide)} className="cursor-pointer">
-                                    {preview ?
-                                        <img src={preview} alt="uploaded" className="w-24 h-24 rounded-full object-cover " />
-                                        :
-                                        <span className="text-sm text-gray-500">Update Your Profile</span>
-                                    }
+                        {/* PROFILE HEADER */}
+
+                        <div className="flex gap-7 pt-7 max-w-[410px] mx-auto items-center ">
+
+                            {/* PROFILE IMAGE */}
+
+                            <div className="flex flex-col w-[120px]">
+
+                                <div
+                                    onClick={() => setHide(true)}
+                                    className="cursor-pointer"
+                                >
+
+                                    {preview ? (
+
+                                        <img
+                                            src={preview}
+                                            alt="profile"
+                                            className="w-24 h-24 rounded-full object-cover"
+                                        />
+
+                                    ) : (
+
+                                        <span className="text-sm text-gray-500">
+                                            Update Your Profile
+                                        </span>
+
+                                    )}
+
                                 </div>
+
                             </div>
 
-                            <div className='flex flex-col gap-1  justify-between'>
+                            {/* USER DETAILS */}
+
+                            <div className="flex flex-col  justify-between">
+
                                 <div>
-                                    <h1>{forms[0].name}</h1>
+
+                                    <h1 className="font-semibold">
+                                        {forms[0].name}
+                                    </h1>
+
                                 </div>
-                                <div className='flex gap-7 text-center  '>
+
+                                {/* PROFILE COUNTS */}
+
+                                <div className="flex gap-5 text-center">
+
                                     <div>
-                                        <h1 className='font-medium'>0</h1>
-                                        <h1 className='font-medium'>post</h1>
+                                        <h1 className="font-medium">
+                                            0
+                                        </h1>
+
+                                        <h1 className="font-medium">
+                                            posts
+                                        </h1>
                                     </div>
 
                                     <div>
-                                        <h1 className='font-medium'>0</h1>
-                                        <h1 className='font-medium'>followers</h1>
+                                        <h1 className="font-medium">
+                                            0
+                                        </h1>
+
+                                        <h1 className="font-medium">
+                                            followers
+                                        </h1>
                                     </div>
 
-                                    <div onClick={() => navigate("/ShowFollow")}>
-                                        <h2 className='font-medium'>{storedUser?.following || 0}</h2>
-                                        <h2 className=' font-medium'>following</h2>
+                                    <div
+                                        onClick={() =>
+                                            navigate("/ShowFollow")
+                                        }
+                                        className="cursor-pointer"
+                                    >
+
+                                        <h2 className="font-medium">
+                                            {storedUser?.following || 0}
+                                        </h2>
+
+                                        <h2 className="font-medium">
+                                            following
+                                        </h2>
+
                                     </div>
+
                                 </div>
+
                             </div>
-                        </div>
-                        <div className='pt-3'>
-                            <h1>{forms[0].bio}</h1>
-                            <h1>{forms[0].links}</h1>
+
                         </div>
 
-                        <div className='flex gap-6 text-center pt-13 '>
-                            <button onClick={() => setHide(!hide)} className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg w-[170px] hover:bg-blue-600"> Edit</button>
-                            <button className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg w-[170px] hover:bg-blue-600"> message</button>
-                            <button className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg w-[40px] hover:bg-blue-600"> +</button>
+                        {/* BIO */}
+
+                        <div className="pt-3">
+
+                            <h1>
+                                {forms[0].bio}
+                            </h1>
+
+                            <h1>
+                                {forms[0].links}
+                            </h1>
+
                         </div>
-                        <div className='flex justify-between align-middle pt-6'>
+
+                        {/* BUTTONS */}
+
+                        <div className="flex gap-3 text-center pt-8">
+
+                            <button
+                                onClick={() => setHide(true)}
+                                className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg w-[170px] hover:bg-blue-600"
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg w-[170px] hover:bg-blue-600"
+                            >
+                                Message
+                            </button>
+
+                            <button
+                                className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg w-[40px] hover:bg-blue-600"
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+                        {/* PROFILE TABS */}
+
+                        <div className="flex justify-between items-center pt-6">
+
                             <button>
                                 <Menu size={26} />
                             </button>
 
-                            <button >
+                            <button>
                                 <Clapperboard size={26} />
                             </button>
 
-
-
-                            <button >
+                            <button>
                                 <User size={26} />
                             </button>
+
                         </div>
+
                     </>
-                }
+                )}
 
-                <div>
+                {/* ================= EDIT FORM ================= */}
 
+                {hide && (
 
-                </div>
+                    <div className="w-full min-h-screen pt-10">
 
+                        <form
+                            onSubmit={handler}
+                            className="flex flex-col gap-4"
+                        >
 
-                {/* EDIT FORM — takes over the full page while hide is true */}
-                {hide &&
-                    <div className='w-full min-h-screen pt-10'>
-                        <form onSubmit={handler} className='flex flex-col gap-4'>
+                            {/* IMAGE */}
+
                             <div className="flex flex-col items-center gap-2 mb-4">
+
                                 {preview && (
-                                    <img src={preview} alt="Preview" className="w-24 h-24 rounded-full object-cover" />
+
+                                    <img
+                                        src={preview}
+                                        alt="Preview"
+                                        className="w-24 h-24 rounded-full object-cover"
+                                    />
+
                                 )}
+
                                 <input
                                     type="file"
                                     accept="image/*"
                                     onChange={handleImageChange}
                                 />
+
                             </div>
 
-                            <div className='flex gap-6 flex-row items-center'>
-                                <label className='w-24'>Name:</label>
+                            {/* NAME */}
+
+                            <div className="flex gap-6 items-center">
+
+                                <label className="w-24">
+                                    Name:
+                                </label>
+
                                 <input
                                     type="text"
-                                    placeholder='Enter Your Name'
+                                    placeholder="Enter Your Name"
                                     value={forms[0].name}
-                                    onChange={e => handleChange("name", e.target.value)}
-                                    className='border-b px-2 py-1 flex-1'
+                                    onChange={(e) =>
+                                        handleChange(
+                                            "name",
+                                            e.target.value
+                                        )
+                                    }
+                                    className="border-b px-2 py-1 flex-1"
                                 />
+
                             </div>
 
-                            <div className='flex gap-6 flex-row items-center'>
-                                <label className='w-24'>Username:</label>
+                            {/* USERNAME */}
+
+                            <div className="flex gap-6 items-center">
+
+                                <label className="w-24">
+                                    Username:
+                                </label>
+
                                 <input
                                     type="text"
+                                    placeholder="Enter Your Username"
                                     value={forms[0].username}
-                                    placeholder='Enter Your username'
-                                    onChange={e => handleChange("username", e.target.value)}
-                                    className='border-b px-2 py-1 flex-1'
+                                    onChange={(e) =>
+                                        handleChange(
+                                            "username",
+                                            e.target.value
+                                        )
+                                    }
+                                    className="border-b px-2 py-1 flex-1"
                                 />
+
                             </div>
 
-                            <div className='flex gap-6 flex-row items-center'>
-                                <label className='w-24'>Pronouns:</label>
+                            {/* PRONOUNS */}
+
+                            <div className="flex gap-6 items-center">
+
+                                <label className="w-24">
+                                    Pronouns:
+                                </label>
+
                                 <input
                                     type="text"
+                                    placeholder="Enter Your Pronouns"
                                     value={forms[0].pronouns}
-                                    placeholder='Enter Your Pronouns'
-                                    onChange={e => handleChange("pronouns", e.target.value)}
-                                    className='border-b px-2 py-1 flex-1'
+                                    onChange={(e) =>
+                                        handleChange(
+                                            "pronouns",
+                                            e.target.value
+                                        )
+                                    }
+                                    className="border-b px-2 py-1 flex-1"
                                 />
+
                             </div>
 
-                            <div className='flex gap-6 flex-row items-center'>
-                                <label className='w-24'>Bio:</label>
-                                <input
-                                    value={forms[0].bio}
-                                    placeholder='Enter Your Bio'
-                                    onChange={e => handleChange("bio", e.target.value)}
-                                    className='border-b px-2 py-1 flex-1'
-                                />
-                            </div>
+                            {/* BIO */}
 
-                            <div className='flex gap-6 flex-row items-center'>
-                                <label className='w-24'>Links:</label>
+                            <div className="flex gap-6 items-center">
+
+                                <label className="w-24">
+                                    Bio:
+                                </label>
+
                                 <input
                                     type="text"
-                                    placeholder='Enter Your Links'
-                                    value={forms[0].links}
-                                    onChange={e => handleChange("links", e.target.value)}
-                                    className='border-b px-2 py-1 flex-1'
+                                    placeholder="Enter Your Bio"
+                                    value={forms[0].bio}
+                                    onChange={(e) =>
+                                        handleChange(
+                                            "bio",
+                                            e.target.value
+                                        )
+                                    }
+                                    className="border-b px-2 py-1 flex-1"
                                 />
-                            </div>
-
-                            <div className='flex   gap-4 items-center'>
-                                <button type="submit" className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Submit</button>
-                                <button type="button" onClick={() => setHide(false)} className="px-6 py-2 bg-gray-300 rounded-lg hover:bg-gray-400">Cancel</button>
 
                             </div>
+
+                            {/* LINKS */}
+
+                            <div className="flex gap-6 items-center">
+
+                                <label className="w-24">
+                                    Links:
+                                </label>
+
+                                <input
+                                    type="text"
+                                    placeholder="Enter Your Links"
+                                    value={forms[0].links}
+                                    onChange={(e) =>
+                                        handleChange(
+                                            "links",
+                                            e.target.value
+                                        )
+                                    }
+                                    className="border-b px-2 py-1 flex-1"
+                                />
+
+                            </div>
+
+                            {/* SUBMIT / CANCEL */}
+
+                            <div className="flex gap-4 items-center">
+
+                                <button
+                                    type="submit"
+                                    className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                >
+                                    Submit
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => setHide(false)}
+                                    className="px-6 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                                >
+                                    Cancel
+                                </button>
+
+                            </div>
+
                         </form>
+
                     </div>
-                }
+
+                )}
 
             </div>
 
         </div>
-    )
-}
+    );
+};
 
-export default UserProfile
+export default UserProfile;

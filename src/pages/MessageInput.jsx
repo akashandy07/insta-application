@@ -81,7 +81,7 @@ const MessageInput = () => {
         </div>
 
         {/* Input - sticky */}
-        <div className="sticky bottom-20  bg-white pt-3 w-[400px] mx-auto">
+        <div className=" bottom-20  bg-white pt-3 w-[400px] mx-auto fixed">
           <div className="w-[400px] mx-auto">
             <div className="max-w-[380px] mx-auto">
               <div className="flex gap-2">

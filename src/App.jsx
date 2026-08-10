@@ -13,6 +13,7 @@ import SearchPage from './pages/SearchPage'
 import SearchResult from './pages/SearchResult'
 import MessageInput from './pages/MessageInput'
 import ShowFollow from './pages/ShowFollow'
+// import CommentPage from './pages/CommentPage'
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('user'))
@@ -80,6 +81,13 @@ const App = () => {
             <ProtectedRoute>
               <MessageInput />
             </ProtectedRoute>} />
+
+
+          {/* <Route path="/CommentPage" element={
+            <ProtectedRoute>
+              <CommentPage />
+            </ProtectedRoute>} /> */}
+
 
           <Route path="/ShowFollow" element={
             <ProtectedRoute>

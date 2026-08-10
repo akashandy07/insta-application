@@ -4,6 +4,7 @@ import { Plus, Heart, MessageCircle, Search, Home, Film } from 'lucide-react'
 
 const NavBar = () => {
     const location = useLocation()
+    const storedUser = JSON.parse(localStorage.getItem("user"));
 
     // Check if current route matches a nav link
     const isActive = (path) => location.pathname === path
@@ -12,7 +13,7 @@ const NavBar = () => {
         <>
             {/* Top Header */}
             <div className='w-[400px] mx-auto h-[80px] bg-white '>
-                
+
                 <div className='flex justify-between items-center h-full max-w-[380px] mx-auto border-b  border-gray-200 '>
                     {/* Plus Icon */}
                     <div className='cursor-pointer hover:opacity-70 transition'>
@@ -116,10 +117,11 @@ const NavBar = () => {
                             }`}
                     >
                         {/* Circle for profile picture placeholder */}
-                        <div className={`w-6 h-6 rounded-full border-2 transition ${isActive('/UserProfile')
-                            ? 'border-black'
-                            : 'border-gray-600 hover:border-black'
-                            }`}></div>
+                        <div className={`w-8 h-8 rounded-full border-2 transition ${isActive('/UserProfile')
+
+                            }`}>
+                            <img src={storedUser?.avatar} className='w-full h-full object-cover rounded-2xl '/>
+                        </div>
                     </Link>
                 </div>
             </div>

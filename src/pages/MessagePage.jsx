@@ -27,8 +27,8 @@ const MessagePage = () => {
         <div className="max-w-[380px] mx-auto">
 
           {show && (
-            <div className="fixed inset-0 z-40 flex items-start justify-center  pt-[190px] w-[400px] mx-auto">
-              <div className="w-[350px] mx-auto h-[650px] bg-white rounded-2xl p-10 shadow-[0_10px_40px_rgba(0,0,0,0.25)]">
+            <div className="fixed bottom-20 z-30 flex items-start justify-center w-[400px] mx-auto">
+              <div className="bg-white h-[60vh] w-[380px] rounded-2xl p-10 shadow-[0_10px_40px_rgba(0,0,0,0.25)] ">
 
                 <div className="flex flex-col gap-4 ">
                   <input
