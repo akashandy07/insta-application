@@ -260,7 +260,7 @@ const UserProfile = () => {
 
                         {/* ================= PROFILE TABS ================= */}
 
-                        <div className="flex justify-between items-center pt-6 border-b">
+                        <div className="flex justify-between items-center pt-6 border-b border-t border-gray-300  border-gray-300 mt-5 items-center text-center">
 
                             {/* POSTS */}
 
@@ -270,8 +270,8 @@ const UserProfile = () => {
                                 }
                                 className={
                                     activeTab === "posts"
-                                        ? "border-b-2 border-black pb-2"
-                                        : "pb-2"
+                                        ? "border-b-2 border-black pb-3 "
+                                        : "pb-3"
                                 }
                             >
                                 <Menu size={26} />
@@ -286,8 +286,8 @@ const UserProfile = () => {
                                 }
                                 className={
                                     activeTab === "reels"
-                                        ? "border-b-2 border-black pb-2"
-                                        : "pb-2"
+                                        ? "border-b-2 border-black pb-3"
+                                        : "pb-3"
                                 }
                             >
                                 <Clapperboard size={26} />
@@ -302,8 +302,8 @@ const UserProfile = () => {
                                 }
                                 className={
                                     activeTab === "tagged"
-                                        ? "border-b-2 border-black pb-2"
-                                        : "pb-2"
+                                        ? "border-b-2 border-black pb-3"
+                                        : "pb-3"
                                 }
                             >
                                 <User size={26} />

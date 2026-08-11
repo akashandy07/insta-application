@@ -104,7 +104,7 @@ const MyStory = () => {
     const currentStory = stories[currentIndex];
 
     return (
-        <div className="w-[400px] mx-auto min-h-screen bg-white-300  relative overflow-hidden">
+        <div className="w-[400px] mx-auto h-[82vh] bg-white-300  relative overflow-hidden">
 
             {/* =====================================
                 TOP BAR
@@ -117,7 +117,7 @@ const MyStory = () => {
                 <button
                     type="button"
                     onClick={closeStory}
-                    className="text-2xl hover:opacity-70"
+                    className="w-10 h-10 rounded-full bg-white text-black text-3xl flex items-center justify-center hover:bg-gray-20011"
                 >
                     ✕
                 </button>
@@ -153,12 +153,12 @@ const MyStory = () => {
                 STORY IMAGE
             ===================================== */}
 
-            <div className="w-full min-h-screen flex items-center justify-center">
+            <div className="w-full h-[80vh] flex items-center justify-center">
 
                 <img
                     src={currentStory.image}
                     alt="My story"
-                    className="w-full max-h-screen object-contain"
+                    className="w-full h-[100vh] object-cover "
                 />
 
             </div>
@@ -203,7 +203,7 @@ const MyStory = () => {
                 BOTTOM VIEW AREA
             ===================================== */}
 
-            <div className="absolute bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-black via-black/70 to-transparent pt-20 pb-8">
+            <div className="absolute bottom-5  left-0 right-0 z-30 pt-20 ">
 
                 {/* VIEW BUTTON */}
 
@@ -220,7 +220,7 @@ const MyStory = () => {
                     </span>
 
                     <span className="text-sm mt-1">
-                        {showViews ? "Hide views" : "View"}
+                        {showViews ? "cd views" : "View"}
                     </span>
 
                 </button>

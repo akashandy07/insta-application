@@ -12,6 +12,7 @@ const MessagePage = () => {
   const [storenote, setNote] = useState()
   const navigate = useNavigate();
   console.log(storenote);
+  <MessageInput storenote={storenote} />
 
 
 
@@ -28,7 +29,7 @@ const MessagePage = () => {
 
           {show && (
             <div className=" fixed bottom-18 flex items-center justify-center z-30 overflow-y-auto">
-              <div className="bg-white h-[70vh] w-[380px]  pt-20  shadow-lg rounded-3xl ">
+              <div className="bg-gray-100 h-[70vh] w-[380px]  pt-20  shadow-lg rounded-3xl ">
 
                 <div className="flex flex-col gap-4 p-10 ">
                   <input
@@ -60,7 +61,7 @@ const MessagePage = () => {
             </div>
           )}
 
-          <div className="flex gap-6 items-end pt-3 overflow-x-auto scrollbar-none text-center">
+          <div className="flex gap-6 items-end pt-5 overflow-x-auto scrollbar-none text-center">
             {Notes.map((i) => {
               const user = users.find((u) => u.id === i.userId);
               return (
@@ -72,7 +73,7 @@ const MessagePage = () => {
                     <img
                       src={user?.avatar}
                       alt={user?.name}
-                      className="w-[60] h-[60] rounded-full object-cover "
+                      className="w-[80] h-[80] rounded-full object-cover "
                     />
                   </div>
                 </div>
@@ -94,7 +95,7 @@ const MessagePage = () => {
 
 
 
-      <div className="w-[400px] h-[500px] mx-auto overflow-y-auto pt-6 overflow-x-auto scrollbar-none z-0">
+      <div className="w-[400px] h-[500px] mx-auto overflow-y-auto pt-3 overflow-x-auto overflow-y-auto pt-8 scrollbar-none ">
         <div className="max-w-[380px] mx-auto">
           <div className="flex flex-col ">
             {users.map((user) => (
@@ -104,7 +105,7 @@ const MessagePage = () => {
                 className="cursor-pointer "
               >
                 <div className="flex gap-6 items-center pb-5  ">
-                  <img src={user.avatar} alt={user.name} className="w-18 h-18 rounded-full object-cover " />
+                  <img src={user.avatar} alt={user.name} className="w-16 h-16 rounded-full object-cover " />
                   <h2 >{user.name}</h2>
                 </div>
               </div>
@@ -114,6 +115,7 @@ const MessagePage = () => {
       </div >
 
     </>
+
   );
 };
 

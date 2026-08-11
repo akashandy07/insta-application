@@ -5,7 +5,7 @@ import MessagePage from "./MessagePage";
 import { PhoneCallIcon } from "lucide-react";
 import { VideoIcon } from "lucide-react";
 
-const MessageInput = () => {
+const MessageInput = ({storenote}) => {
   const { id } = useParams();
   const user = users.find((u) => u.id === Number(id));
   console.log(user);
@@ -43,7 +43,7 @@ const MessageInput = () => {
                   <img
                     src={user?.avatar}
                     alt={user?.name}
-                    className="w-16 h-16 rounded-full"
+                    className="w-18 h-18 rounded-full"
                   />
                 </div>
                 <div>
