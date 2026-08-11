@@ -5,13 +5,10 @@ import MessagePage from "./MessagePage";
 import { PhoneCallIcon } from "lucide-react";
 import { VideoIcon } from "lucide-react";
 
-const MessageInput = ({storenote}) => {
+const MessageInput = () => {
   const { id } = useParams();
   const user = users.find((u) => u.id === Number(id));
-  console.log(user);
-  console.log(id);
-  console.log(Number(id));
-  console.log(users);
+ 
 
 
 
@@ -63,7 +60,6 @@ const MessageInput = ({storenote}) => {
             </div>
 
 
-
             {messages.length > 0 ? (
               messages.map((msg, index) => (
                 <div
@@ -78,6 +74,10 @@ const MessageInput = ({storenote}) => {
             )}
             <div ref={messagesEndRef} />
           </div>
+
+        </div>
+        <div className="max-w-[380px] mx-auto">
+         
         </div>
 
         {/* Input - sticky */}
@@ -105,7 +105,7 @@ const MessageInput = ({storenote}) => {
         </div>
 
       </div>
-      
+
     </>
   );
 };

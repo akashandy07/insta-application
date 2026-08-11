@@ -95,7 +95,7 @@ const MyStory = () => {
 
     if (stories.length === 0) {
         return (
-            <div className="w-[400px] mx-auto min-h-screen bg-white-300 flex items-center justify-center text-white">
+            <div className="w-[400px] mx-auto h-[75vh] bg-white-300 flex items-center justify-center text-white">
                 <p>No story available</p>
             </div>
         );
@@ -153,12 +153,12 @@ const MyStory = () => {
                 STORY IMAGE
             ===================================== */}
 
-            <div className="w-full h-[80vh] flex items-center justify-center">
+            <div className="w-full h-[85vh] flex items-center justify-center">
 
                 <img
                     src={currentStory.image}
                     alt="My story"
-                    className="w-full h-[100vh] object-cover "
+                    className="w-full h-[85vh] object-cover "
                 />
 
             </div>

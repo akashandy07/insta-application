@@ -45,6 +45,8 @@ export const useCommentPage = () => {
         setInput("");
     }
 
+    
+
     return {
         comments,
         postComment,
