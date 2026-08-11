@@ -60,7 +60,7 @@ const MessagePage = () => {
             </div>
           )}
 
-          <div className="flex gap-10 items-end pt-3 overflow-x-auto scrollbar-none text-center">
+          <div className="flex gap-6 items-end pt-3 overflow-x-auto scrollbar-none text-center">
             {Notes.map((i) => {
               const user = users.find((u) => u.id === i.userId);
               return (
@@ -103,7 +103,7 @@ const MessagePage = () => {
                 onClick={() => navigate(`/messages/${user.id}`)}
                 className="cursor-pointer "
               >
-                <div className="flex gap-6 items-center pb-7  ">
+                <div className="flex gap-6 items-center pb-5  ">
                   <img src={user.avatar} alt={user.name} className="w-18 h-18 rounded-full object-cover " />
                   <h2 >{user.name}</h2>
                 </div>

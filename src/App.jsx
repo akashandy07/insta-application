@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import PostPage from './pages/PostPage'
-// import UserPage from './pages/UserPage'
 import MessagePage from './pages/MessagePage'
 import NavBar from './navbar/NavBar'
 import ReelsPage from './pages/ReelsPage'
@@ -13,17 +12,15 @@ import SearchPage from './pages/SearchPage'
 import SearchResult from './pages/SearchResult'
 import MessageInput from './pages/MessageInput'
 import ShowFollow from './pages/ShowFollow'
-// import CommentPage from './pages/CommentPage'
+import PhotoUploadIcon from './pages/PhotoUploadIcon'
+import MyStory from './pages/MyStory'
+
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('user'))
 
   return (
     <>
-
-
-
-
       <BrowserRouter>
         {isLoggedIn && <NavBar />}
         <Routes>
@@ -35,11 +32,6 @@ const App = () => {
             </ProtectedRoute>}
           />
 
-          {/* <Route path="/UserPage" element={
-            <ProtectedRoute>
-              <UserPage />
-            </ProtectedRoute>}
-          /> */}
           <Route path="/SearchPage" element={
             <ProtectedRoute>
               <SearchPage />
@@ -93,6 +85,17 @@ const App = () => {
             <ProtectedRoute>
               <ShowFollow />
             </ProtectedRoute>} />
+
+          <Route path="/PhotoUploadIcon" element={
+            <ProtectedRoute>
+              <PhotoUploadIcon />
+            </ProtectedRoute>} />
+
+            <Route path="/MyStory" element={
+            <ProtectedRoute>
+              <MyStory />
+            </ProtectedRoute>} />
+
 
         </Routes>
 
