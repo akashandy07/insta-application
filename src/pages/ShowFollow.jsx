@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useFollowLogics } from "../custom/FollowLogics";
 
 const ShowFollow = () => {
     const storedUser = JSON.parse(localStorage.getItem("user")) || {};
+    const { data, toggleFollow } = useFollowLogics()
 
     const [input, setInput] = useState("");
     const [activeTab, setActiveTab] = useState("following");
@@ -63,20 +65,36 @@ const ShowFollow = () => {
             <div className="mt-5">
 
                 {filteredUsers.map((user) => (
-                    <div
-                        key={user.id}
-                        className="flex items-center gap-3 mb-4"
-                        onClick={() => navigate(`/ProfilePage/${user.id}`)}
-                    >
-                        <img
-                            src={user.avatar || "https://i.pravatar.cc/150"}
-                            alt={user.username}
-                            className="w-12 h-12 rounded-full object-cover"
-                        />
+                    <>
+                        <div className="flex justify-between ">
+                            <div key={user.id} className="flex items-center gap-3 mb-4" >
+                                <img
+                                    src={user.avatar || "https://i.pravatar.cc/150"}
+                                    alt={user.username}
+                                    className="w-14 h-14 rounded-full object-cover"
+                                    onClick={() => navigate(`/ProfilePage/${user.id}`)}
+                                />
+                                <p className="text-lg text-black  ">{user.username}</p>
+                            </div>
+                            <div>
+                                <button
+                                    onClick={() =>
+                                        navigate(
+                                            `/messages/${user.id}`
+                                        )
+                                    }
+                                    className="px-8 py-1.5 bg-gray-200 text-black font-semibold rounded text-lg w-[120px]"
+                                >
 
-                        <p>{user.username}</p>
-                    </div>
+                                    Message
+
+                                </button>
+                            </div>
+
+                        </div>
+                    </>
                 ))}
+
 
             </div>
 

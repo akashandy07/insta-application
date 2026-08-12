@@ -26,14 +26,14 @@ const ProfilePage = () => {
 
     const {
         postData,
-        likeButton
+        likeButton,
     } = useLikeLogic();
 
     // ================= REEL LIKE =================
 
     const {
         reelData,
-        reelLikeButton
+        reelLikeButton,
     } = useReelLikeLogic();
 
     // ================= REEL COMMENTS =================
@@ -42,7 +42,7 @@ const ProfilePage = () => {
         reelComments,
         postReelComment,
         setInput: setReelInput,
-        input: reelInput
+        input: reelInput,
     } = useReelCommentLogic();
 
     // ================= STATES =================
@@ -53,8 +53,8 @@ const ProfilePage = () => {
 
     const [activeTab, setActiveTab] = useState("posts");
 
-    // false = 370px x 70vh
-    // true = 150px x 150px
+    // true = grid
+    // false = normal view
     const [grid, setGrid] = useState(true);
 
     // ================= POST COMMENTS =================
@@ -134,15 +134,12 @@ const ProfilePage = () => {
         if (!postInput.trim()) return;
 
         setPostComments((prev) => [
-
             ...prev,
-
             {
                 id: Date.now(),
                 postId: postId,
                 text: postInput,
             },
-
         ]);
 
         setPostInput("");
@@ -161,7 +158,6 @@ const ProfilePage = () => {
     return (
 
         <div className="w-[400px] mx-auto min-h-[80vh] bg-white overflow-x-auto scrollbar-none">
-
 
             {/* ================================================= */}
             {/* PROFILE HEADER */}
@@ -193,7 +189,6 @@ const ProfilePage = () => {
 
                                 </div>
 
-
                                 {/* POSTS / FOLLOWERS / FOLLOWING */}
 
                                 <div className="flex-1">
@@ -212,7 +207,6 @@ const ProfilePage = () => {
 
                                         </div>
 
-
                                         <div>
 
                                             <p className="font-bold text-lg">
@@ -224,7 +218,6 @@ const ProfilePage = () => {
                                             </p>
 
                                         </div>
-
 
                                         <div>
 
@@ -244,7 +237,6 @@ const ProfilePage = () => {
 
                             </div>
 
-
                             {/* NAME + BIO */}
 
                             <div>
@@ -258,7 +250,6 @@ const ProfilePage = () => {
                                 </p>
 
                             </div>
-
 
                             {/* BUTTONS */}
 
@@ -274,13 +265,10 @@ const ProfilePage = () => {
                                             : "px-8 py-1.5 bg-blue-500 text-white font-semibold rounded text-sm w-[120px]"
                                     }
                                 >
-
                                     {user.isFollowing
                                         ? "Unfollow"
                                         : "Follow"}
-
                                 </button>
-
 
                                 <button
                                     onClick={() =>
@@ -290,11 +278,8 @@ const ProfilePage = () => {
                                     }
                                     className="px-8 py-1.5 bg-gray-200 text-black font-semibold rounded text-sm w-[120px]"
                                 >
-
                                     Message
-
                                 </button>
-
 
                                 <button
                                     onClick={() =>
@@ -302,9 +287,7 @@ const ProfilePage = () => {
                                     }
                                     className="px-8 py-1.5 bg-gray-200 text-black font-semibold rounded text-sm w-[40px]"
                                 >
-
                                     +
-
                                 </button>
 
                             </div>
@@ -323,7 +306,6 @@ const ProfilePage = () => {
 
             </div>
 
-
             {/* ================================================= */}
             {/* SUGGESTIONS */}
             {/* ================================================= */}
@@ -331,7 +313,6 @@ const ProfilePage = () => {
             {show && (
                 <SuggestionPage />
             )}
-
 
             {/* ================================================= */}
             {/* TABS */}
@@ -354,9 +335,7 @@ const ProfilePage = () => {
                                     : "text-gray-600"
                             }`}
                         >
-
                             {label}
-
                         </button>
 
                     ))}
@@ -364,7 +343,6 @@ const ProfilePage = () => {
                 </div>
 
             </div>
-
 
             {/* ================================================= */}
             {/* POSTS */}
@@ -380,13 +358,13 @@ const ProfilePage = () => {
 
                             /* ================= GRID VIEW ================= */
 
-                            <div className="grid grid-cols-2 gap-1">
+                            <div className="grid grid-cols-2 gap-4">
 
                                 {getpost.map((p) => (
 
                                     <div
                                         key={p.id}
-                                        className="w-[150px] h-[150px]"
+                                        className="w-[170px] h-[160px]"
                                     >
 
                                         <img
@@ -395,7 +373,7 @@ const ProfilePage = () => {
                                             onClick={() =>
                                                 setGrid(false)
                                             }
-                                            className="w-[150px] h-[150px] object-cover cursor-pointer"
+                                            className="w-[170px] h-[160px] object-cover cursor-pointer"
                                         />
 
                                     </div>
@@ -451,7 +429,6 @@ const ProfilePage = () => {
 
                                             </div>
 
-
                                             {/* POST IMAGE */}
 
                                             <img
@@ -463,11 +440,9 @@ const ProfilePage = () => {
                                                 className="w-[370px] h-[70vh] object-cover rounded-lg cursor-pointer"
                                             />
 
-
                                             {/* LIKE + COMMENT */}
 
                                             <div className="flex gap-5 pt-3">
-
 
                                                 {/* LIKE */}
 
@@ -498,7 +473,6 @@ const ProfilePage = () => {
 
                                                 </div>
 
-
                                                 {/* COMMENT */}
 
                                                 <div
@@ -526,10 +500,7 @@ const ProfilePage = () => {
 
                                             </div>
 
-
-                                            {/* ================================================= */}
                                             {/* POST COMMENT POPUP */}
-                                            {/* ================================================= */}
 
                                             {hide === p.id && (
 
@@ -554,7 +525,6 @@ const ProfilePage = () => {
                                                             </button>
 
                                                         </div>
-
 
                                                         {/* COMMENTS */}
 
@@ -601,7 +571,6 @@ const ProfilePage = () => {
 
                                                         </div>
 
-
                                                         {/* INPUT */}
 
                                                         <div className="flex gap-2 mt-4">
@@ -639,7 +608,6 @@ const ProfilePage = () => {
 
                                             )}
 
-
                                             {/* CAPTION */}
 
                                             <div className="pt-2">
@@ -657,7 +625,6 @@ const ProfilePage = () => {
                                                 </p>
 
                                             </div>
-
 
                                             {/* TIMESTAMP */}
 
@@ -695,7 +662,6 @@ const ProfilePage = () => {
 
             )}
 
-
             {/* ================================================= */}
             {/* REELS */}
             {/* ================================================= */}
@@ -708,7 +674,7 @@ const ProfilePage = () => {
 
                         grid ? (
 
-                            /* ================= GRID VIEW ================= */
+                            /* ================= REEL GRID VIEW ================= */
 
                             <div className="grid grid-cols-2 gap-1 py-2">
 
@@ -738,9 +704,9 @@ const ProfilePage = () => {
 
                         ) : (
 
-                            /* ================= NORMAL VIEW ================= */
+                            /* ================= REEL NORMAL VIEW ================= */
 
-                            <div className="flex flex-col">
+                            <div className="fixed inset-0  flex flex-col bg-black w-[400px] z-50 mx-auto right-0 h-[105vh]">
 
                                 {userReels.map((reel) => {
 
@@ -754,7 +720,7 @@ const ProfilePage = () => {
 
                                         <div
                                             key={reel.id}
-                                            className="relative w-full bg-white"
+                                            className="relative w-full h-[100vh] bg-black"
                                         >
 
                                             {/* VIDEO */}
@@ -766,25 +732,36 @@ const ProfilePage = () => {
                                                 playsInline
                                                 onClick={(e) => {
 
-                                                    setGrid(true);
-
                                                     if (
                                                         e.currentTarget.paused
                                                     ) {
+
                                                         e.currentTarget.play();
+
                                                     } else {
+
                                                         e.currentTarget.pause();
+
                                                     }
 
                                                 }}
-                                                className="w-[370px] h-[70vh] object-cover cursor-pointer"
+                                                className="w-[400px] h-[100vh] object-cover cursor-pointer "
                                             />
 
+                                            {/* BACK TO GRID */}
+
+                                            <button
+                                                onClick={() =>
+                                                    setGrid(true)
+                                                }
+                                                className="absolute top-5 left-5 z-10 bg-black/50 text-white px-3 py-1 rounded-full"
+                                            >
+                                                Back
+                                            </button>
 
                                             {/* RIGHT SIDE */}
 
-                                            <div className="absolute right-3 bottom-10 flex flex-col items-center gap-5">
-
+                                            <div className="absolute right-8 bottom-20 flex flex-col items-center gap-5">
 
                                                 {/* LIKE */}
 
@@ -821,7 +798,6 @@ const ProfilePage = () => {
 
                                                 </div>
 
-
                                                 {/* COMMENT */}
 
                                                 <div className="flex flex-col items-center">
@@ -854,10 +830,9 @@ const ProfilePage = () => {
 
                                             </div>
 
-
                                             {/* USER INFO */}
 
-                                            <div className="absolute bottom-10 left-4">
+                                            <div className="absolute bottom-20 left-4">
 
                                                 <div className="flex items-center gap-4">
 
@@ -872,11 +847,15 @@ const ProfilePage = () => {
                                                     <div>
 
                                                         <p className="text-white font-semibold text-sm">
-                                                            {user?.username}
+                                                            {
+                                                                user?.username
+                                                            }
                                                         </p>
 
                                                         <p className="text-white text-sm bg-black/50">
-                                                            {reel.caption}
+                                                            {
+                                                                reel.caption
+                                                            }
                                                         </p>
 
                                                     </div>
@@ -885,119 +864,116 @@ const ProfilePage = () => {
 
                                             </div>
 
-
-                                            {/* ================================================= */}
                                             {/* REEL COMMENT POPUP */}
-                                            {/* ================================================= */}
 
                                             {hide ===
                                                 `reel-${reel.id}` && (
 
-                                                <div className="fixed inset-0 z-50 flex items-end justify-center">
+                                                    <div className="fixed inset-0 z-50 flex items-end justify-center">
 
-                                                    <div className="bg-white w-[400px] h-[60vh] rounded-t-xl p-5">
+                                                        <div className="bg-white w-[400px] h-[60vh] rounded-t-xl p-5">
 
-                                                        {/* HEADER */}
+                                                            {/* HEADER */}
 
-                                                        <div className="flex items-center justify-between border-b pb-3">
+                                                            <div className="flex items-center justify-between border-b pb-3">
 
-                                                            <h2 className="text-lg font-bold">
-                                                                Comments
-                                                            </h2>
+                                                                <h2 className="text-lg font-bold">
+                                                                    Comments
+                                                                </h2>
 
-                                                            <button
-                                                                onClick={() =>
-                                                                    setHide(null)
-                                                                }
-                                                            >
-                                                                <X size={22} />
-                                                            </button>
+                                                                <button
+                                                                    onClick={() =>
+                                                                        setHide(
+                                                                            null
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <X size={22} />
+                                                                </button>
 
-                                                        </div>
+                                                            </div>
 
+                                                            {/* COMMENTS */}
 
-                                                        {/* COMMENTS */}
+                                                            <div className="mt-4 h-[40vh] overflow-y-auto">
 
-                                                        <div className="mt-4 h-[40vh] overflow-y-auto">
+                                                                {currentReelComments.length > 0 ? (
 
-                                                            {currentReelComments.length > 0 ? (
+                                                                    currentReelComments.map(
+                                                                        (comment) => (
 
-                                                                currentReelComments.map(
-                                                                    (comment) => (
-
-                                                                        <div
-                                                                            key={
-                                                                                comment.id
-                                                                            }
-                                                                            className="flex items-center gap-3 py-3 border-b"
-                                                                        >
-
-                                                                            <img
-                                                                                src={
-                                                                                    storedUser?.avatar
+                                                                            <div
+                                                                                key={
+                                                                                    comment.id
                                                                                 }
-                                                                                alt=""
-                                                                                className="w-9 h-9 rounded-full object-cover"
-                                                                            />
+                                                                                className="flex items-center gap-3 py-3 border-b"
+                                                                            >
 
-                                                                            <p className="text-sm">
-                                                                                {
-                                                                                    comment.text
-                                                                                }
-                                                                            </p>
+                                                                                <img
+                                                                                    src={
+                                                                                        storedUser?.avatar
+                                                                                    }
+                                                                                    alt=""
+                                                                                    className="w-9 h-9 rounded-full object-cover"
+                                                                                />
 
-                                                                        </div>
+                                                                                <p className="text-sm">
+                                                                                    {
+                                                                                        comment.text
+                                                                                    }
+                                                                                </p>
 
+                                                                            </div>
+
+                                                                        )
                                                                     )
-                                                                )
 
-                                                            ) : (
+                                                                ) : (
 
-                                                                <p className="text-gray-500 text-sm">
-                                                                    No comments yet
-                                                                </p>
+                                                                    <p className="text-gray-500 text-sm">
+                                                                        No comments yet
+                                                                    </p>
 
-                                                            )}
+                                                                )}
 
-                                                        </div>
+                                                            </div>
 
+                                                            {/* INPUT */}
 
-                                                        {/* INPUT */}
+                                                            <div className="flex gap-2 mt-4">
 
-                                                        <div className="flex gap-2 mt-4">
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder="Add a comment..."
+                                                                    value={
+                                                                        reelInput
+                                                                    }
+                                                                    onChange={(e) =>
+                                                                        setReelInput(
+                                                                            e.target.value
+                                                                        )
+                                                                    }
+                                                                    className="flex-1 border rounded-lg px-3 py-2 outline-none"
+                                                                />
 
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Add a comment..."
-                                                                value={
-                                                                    reelInput
-                                                                }
-                                                                onChange={(e) =>
-                                                                    setReelInput(
-                                                                        e.target.value
-                                                                    )
-                                                                }
-                                                                className="flex-1 border rounded-lg px-3 py-2 outline-none"
-                                                            />
+                                                                <button
+                                                                    onClick={() =>
+                                                                        postReelComment(
+                                                                            reel.id
+                                                                        )
+                                                                    }
+                                                                    className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                                                                >
+                                                                    Post
+                                                                </button>
 
-                                                            <button
-                                                                onClick={() =>
-                                                                    postReelComment(
-                                                                        reel.id
-                                                                    )
-                                                                }
-                                                                className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-                                                            >
-                                                                Post
-                                                            </button>
+                                                            </div>
 
                                                         </div>
 
                                                     </div>
 
-                                                </div>
-
-                                            )}
+                                                )}
 
                                         </div>
 
@@ -1024,7 +1000,6 @@ const ProfilePage = () => {
                 </div>
 
             )}
-
 
             {/* ================================================= */}
             {/* TAGGED */}
