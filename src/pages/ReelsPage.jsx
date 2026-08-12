@@ -124,7 +124,7 @@ const ReelsPage = () => {
                                         element;
                                 }}
                                 src={reel.reel}
-                                muted
+                              
                                 loop
                                 playsInline
                                 onClick={(e) => {
