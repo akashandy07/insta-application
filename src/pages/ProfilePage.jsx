@@ -6,8 +6,6 @@ import { useLikeLogic } from "../custom/LikeLogic";
 import { useReelCommentLogic } from "../custom/ReelCommentLogic";
 import { useReelLikeLogic } from "../custom/ReelLikeLogic";
 
-import { reels } from "../data/Reels";
-
 import {
     Heart,
     MessageCircle,
@@ -15,7 +13,6 @@ import {
 } from "lucide-react";
 
 import SuggestionPage from "./SuggestionPage";
-
 
 const ProfilePage = () => {
 
@@ -32,14 +29,12 @@ const ProfilePage = () => {
         likeButton
     } = useLikeLogic();
 
-
     // ================= REEL LIKE =================
 
     const {
         reelData,
         reelLikeButton
     } = useReelLikeLogic();
-
 
     // ================= REEL COMMENTS =================
 
@@ -50,7 +45,6 @@ const ProfilePage = () => {
         input: reelInput
     } = useReelCommentLogic();
 
-
     // ================= STATES =================
 
     const [show, setShow] = useState(false);
@@ -59,6 +53,9 @@ const ProfilePage = () => {
 
     const [activeTab, setActiveTab] = useState("posts");
 
+    // false = 370px x 70vh
+    // true = 150px x 150px
+    const [grid, setGrid] = useState(true);
 
     // ================= POST COMMENTS =================
 
@@ -74,11 +71,9 @@ const ProfilePage = () => {
         return [];
     });
 
-
     const [postInput, setPostInput] = useState("");
 
-
-    // Save post comments
+    // ================= SAVE POST COMMENTS =================
 
     useEffect(() => {
 
@@ -89,13 +84,11 @@ const ProfilePage = () => {
 
     }, [postComments]);
 
-
     // ================= USER =================
 
     const user = data.find(
         (item) => item.id === parseInt(id)
     );
-
 
     // ================= USER REELS =================
 
@@ -104,7 +97,6 @@ const ProfilePage = () => {
             reel.userId === parseInt(id)
     );
 
-
     // ================= USER POSTS =================
 
     const getpost = postData.filter(
@@ -112,13 +104,11 @@ const ProfilePage = () => {
             post.userId === parseInt(id)
     );
 
-
     // ================= STORED USER =================
 
     const storedUser = JSON.parse(
         localStorage.getItem("user")
     );
-
 
     // ================= TABS =================
 
@@ -136,7 +126,6 @@ const ProfilePage = () => {
             label: "TAGGED",
         },
     ];
-
 
     // ================= POST COMMENT =================
 
@@ -159,7 +148,6 @@ const ProfilePage = () => {
         setPostInput("");
     }
 
-
     // ================= GET POST COMMENTS =================
 
     function getPostComments(postId) {
@@ -169,7 +157,6 @@ const ProfilePage = () => {
                 comment.postId === postId
         );
     }
-
 
     return (
 
@@ -287,9 +274,11 @@ const ProfilePage = () => {
                                             : "px-8 py-1.5 bg-blue-500 text-white font-semibold rounded text-sm w-[120px]"
                                     }
                                 >
+
                                     {user.isFollowing
                                         ? "Unfollow"
                                         : "Follow"}
+
                                 </button>
 
 
@@ -301,7 +290,9 @@ const ProfilePage = () => {
                                     }
                                     className="px-8 py-1.5 bg-gray-200 text-black font-semibold rounded text-sm w-[120px]"
                                 >
+
                                     Message
+
                                 </button>
 
 
@@ -311,7 +302,9 @@ const ProfilePage = () => {
                                     }
                                     className="px-8 py-1.5 bg-gray-200 text-black font-semibold rounded text-sm w-[40px]"
                                 >
+
                                     +
+
                                 </button>
 
                             </div>
@@ -331,7 +324,9 @@ const ProfilePage = () => {
             </div>
 
 
+            {/* ================================================= */}
             {/* SUGGESTIONS */}
+            {/* ================================================= */}
 
             {show && (
                 <SuggestionPage />
@@ -342,7 +337,7 @@ const ProfilePage = () => {
             {/* TABS */}
             {/* ================================================= */}
 
-            <div className="max-w-[380px]  mx-auto border-b border-gray-300">
+            <div className="max-w-[380px] mx-auto border-b border-gray-300">
 
                 <div className="flex justify-between">
 
@@ -353,12 +348,15 @@ const ProfilePage = () => {
                             onClick={() =>
                                 setActiveTab(key)
                             }
-                            className={`flex-1 py-3 text-sm font-semibold uppercase tracking-wider ${activeTab === key
-                                ? "text-black border-b-2 border-black"
-                                : "text-gray-600"
-                                }`}
+                            className={`flex-1 py-3 text-sm font-semibold uppercase tracking-wider ${
+                                activeTab === key
+                                    ? "text-black border-b-2 border-black"
+                                    : "text-gray-600"
+                            }`}
                         >
+
                             {label}
+
                         </button>
 
                     ))}
@@ -374,455 +372,170 @@ const ProfilePage = () => {
 
             {activeTab === "posts" && (
 
-                <div className="max-w-[380px] mx-auto py-8">
+                <div className="max-w-[380px] mx-auto py-5">
 
                     {getpost.length > 0 ? (
 
-                        <div className="flex flex-col gap-8">
+                        grid ? (
 
-                            {getpost.map((p) => {
+                            /* ================= GRID VIEW ================= */
 
-                                const currentComments =
-                                    getPostComments(p.id);
+                            <div className="grid grid-cols-2 gap-1">
 
-                                return (
+                                {getpost.map((p) => (
 
                                     <div
                                         key={p.id}
-                                        className="border-b border-gray-200 pb-6"
+                                        className="w-[150px] h-[150px]"
                                     >
-
-
-                                        {/* POST USER */}
-
-                                        <div className="flex items-center gap-3 mb-3">
-
-                                            <img
-                                                src={user.avatar}
-                                                alt={user.username}
-                                                className="w-10 h-10 rounded-full object-cover cursor-pointer"
-                                                onClick={() =>
-                                                    navigate(
-                                                        `/ProfilePage/${user.id}`
-                                                    )
-                                                }
-                                            />
-
-
-                                            <div>
-
-                                                <p className="font-semibold text-sm">
-                                                    {user.username}
-                                                </p>
-
-                                                <p className="text-xs text-gray-500">
-                                                    {user.name}
-                                                </p>
-
-                                            </div>
-
-                                        </div>
-
-
-                                        {/* POST IMAGE */}
 
                                         <img
                                             src={p.image}
                                             alt={p.caption}
-                                            className="w-full h-auto object-cover rounded-lg"
+                                            onClick={() =>
+                                                setGrid(false)
+                                            }
+                                            className="w-[150px] h-[150px] object-cover cursor-pointer"
                                         />
 
+                                    </div>
 
-                                        {/* LIKE + COMMENT */}
+                                ))}
 
-                                        <div className="flex gap-5 pt-3">
+                            </div>
 
+                        ) : (
 
-                                            {/* LIKE */}
+                            /* ================= NORMAL VIEW ================= */
 
-                                            <div
-                                                className="flex items-center gap-1 cursor-pointer"
-                                                onClick={() =>
-                                                    likeButton(p.id)
-                                                }
-                                            >
+                            <div className="flex flex-col gap-8">
 
-                                                <Heart
-                                                    size={20}
-                                                    fill={
-                                                        p.liked
-                                                            ? "red"
-                                                            : "none"
-                                                    }
-                                                    color={
-                                                        p.liked
-                                                            ? "red"
-                                                            : "black"
+                                {getpost.map((p) => {
+
+                                    const currentComments =
+                                        getPostComments(p.id);
+
+                                    return (
+
+                                        <div
+                                            key={p.id}
+                                            className="border-b border-gray-200 pb-6"
+                                        >
+
+                                            {/* POST USER */}
+
+                                            <div className="flex items-center gap-3 mb-3">
+
+                                                <img
+                                                    src={user.avatar}
+                                                    alt={user.username}
+                                                    className="w-10 h-10 rounded-full object-cover cursor-pointer"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/ProfilePage/${user.id}`
+                                                        )
                                                     }
                                                 />
 
-                                                <span className="text-sm font-semibold">
-                                                    {p.likes}
-                                                </span>
+                                                <div>
 
-                                            </div>
+                                                    <p className="font-semibold text-sm">
+                                                        {user.username}
+                                                    </p>
 
-
-                                            {/* COMMENT */}
-
-                                            <div
-                                                className="flex items-center gap-1 cursor-pointer"
-                                                onClick={() =>
-                                                    setHide(
-                                                        hide === p.id
-                                                            ? null
-                                                            : p.id
-                                                    )
-                                                }
-                                            >
-
-                                                <MessageCircle
-                                                    size={20}
-                                                />
-
-                                                <span className="text-sm font-semibold">
-                                                    {
-                                                        currentComments.length
-                                                    }
-                                                </span>
-
-                                            </div>
-
-                                        </div>
-
-
-                                        {/* ================================================= */}
-                                        {/* POST COMMENT POPUP */}
-                                        {/* ================================================= */}
-
-                                        {hide === p.id && (
-
-                                            <div className="fixed inset-0 z-50 flex items-end justify-center">
-
-                                                <div className="bg-white w-[400px] h-[60vh] rounded-t-xl p-5 shadow-lg">
-
-
-                                                    {/* HEADER */}
-
-                                                    <div className="flex items-center justify-between border-b pb-3">
-
-                                                        <h2 className="text-lg font-bold">
-                                                            Comments
-                                                        </h2>
-
-                                                        <button
-                                                            onClick={() =>
-                                                                setHide(null)
-                                                            }
-                                                        >
-                                                            <X size={22} />
-                                                        </button>
-
-                                                    </div>
-
-
-                                                    {/* COMMENTS */}
-
-                                                    <div className="mt-4 h-[40vh] overflow-y-auto">
-
-                                                        {currentComments.length > 0 ? (
-
-                                                            currentComments.map(
-                                                                (comment) => (
-
-                                                                    <div
-                                                                        key={
-                                                                            comment.id
-                                                                        }
-                                                                        className="py-2 border-b flex items-center gap-5"
-                                                                    >
-
-                                                                        <img
-                                                                            src={
-                                                                                storedUser?.avatar
-                                                                            }
-                                                                            alt=""
-                                                                            className="w-10 h-10 rounded-full object-cover"
-                                                                        />
-
-                                                                        <p className="text-sm">
-                                                                            {
-                                                                                comment.text
-                                                                            }
-                                                                        </p>
-
-                                                                    </div>
-
-                                                                )
-                                                            )
-
-                                                        ) : (
-
-                                                            <p className="text-gray-500 text-sm">
-                                                                No comments yet
-                                                            </p>
-
-                                                        )}
-
-                                                    </div>
-
-
-                                                    {/* INPUT */}
-
-                                                    <div className="flex gap-2 mt-4">
-
-                                                        <input
-                                                            type="text"
-                                                            placeholder="Add a comment..."
-                                                            value={
-                                                                postInput
-                                                            }
-                                                            onChange={(e) =>
-                                                                setPostInput(
-                                                                    e.target.value
-                                                                )
-                                                            }
-                                                            className="flex-1 border rounded-lg px-3 py-2 outline-none"
-                                                        />
-
-
-                                                        <button
-                                                            onClick={() =>
-                                                                postComment(
-                                                                    p.id
-                                                                )
-                                                            }
-                                                            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-                                                        >
-                                                            Post
-                                                        </button>
-
-                                                    </div>
+                                                    <p className="text-xs text-gray-500">
+                                                        {user.name}
+                                                    </p>
 
                                                 </div>
 
                                             </div>
 
-                                        )}
 
+                                            {/* POST IMAGE */}
 
-                                        {/* CAPTION */}
-
-                                        <div className="pt-2">
-
-                                            <p className="text-sm">
-
-                                                <span className="font-semibold">
-                                                    {user.username}
-                                                </span>
-
-                                                {" "}
-
-                                                {p.caption}
-
-                                            </p>
-
-                                        </div>
-
-
-                                        {/* TIMESTAMP */}
-
-                                        <div className="pt-2">
-
-                                            <p className="text-xs text-gray-500">
-                                                {p.timestamp}
-                                            </p>
-
-                                        </div>
-
-                                    </div>
-
-                                );
-
-                            })}
-
-                        </div>
-
-                    ) : (
-
-                        <div className="flex justify-center items-center py-20">
-
-                            <p className="text-gray-600">
-                                No posts yet
-                            </p>
-
-                        </div>
-
-                    )}
-
-                </div>
-
-            )}
-
-
-            {/* ================================================= */}
-            {/* REELS */}
-            {/* ================================================= */}
-
-            {activeTab === "reels" && (
-
-                <div className="py-2 h-50vh">
-
-                    {userReels.length > 0 ? (
-
-                        <div className="flex flex-col">
-
-                            {userReels.map((reel) => {
-
-                                const currentReelComments =
-                                    reelComments.find(
-                                        (item) =>
-                                            item.id === reel.id
-                                    )?.comments || [];
-
-
-                                return (
-
-                                    <div
-                                        key={reel.id}
-                                        className="relative w-full h-auto bg-white "
-                                    >
-
-
-                                        {/* VIDEO */}
-
-                                        <video
-                                            src={reel.reel}
-                                            autoPlay
-                                            loop
-                                            muted
-                                            playsInline
-                                            onClick={(e) => {
-                                                if (e.currentTarget.paused) {
-                                                    e.currentTarget.play();
-                                                } else {
-                                                    e.currentTarget.pause();
+                                            <img
+                                                src={p.image}
+                                                alt={p.caption}
+                                                onClick={() =>
+                                                    setGrid(true)
                                                 }
-                                            }}
-                                            className="w-full h-[50vh] object-cover cursor-pointer"
-                                        />
+                                                className="w-[370px] h-[70vh] object-cover rounded-lg cursor-pointer"
+                                            />
 
 
-                                        {/* RIGHT SIDE */}
+                                            {/* LIKE + COMMENT */}
 
-                                        <div className="absolute right-3 bottom-10 flex flex-col items-center gap-5" >
+                                            <div className="flex gap-5 pt-3">
 
-                                            {/* LIKE */}
 
-                                            <div className="flex flex-col items-center">
+                                                {/* LIKE */}
 
-                                                <button
+                                                <div
+                                                    className="flex items-center gap-1 cursor-pointer"
                                                     onClick={() =>
-                                                        reelLikeButton(
-                                                            reel.id
-                                                        )
+                                                        likeButton(p.id)
                                                     }
-                                                    className="cursor-pointer"
                                                 >
 
                                                     <Heart
-                                                        size={30}
+                                                        size={20}
                                                         fill={
-                                                            reel.liked
+                                                            p.liked
                                                                 ? "red"
-                                                                : "white"
+                                                                : "none"
                                                         }
                                                         color={
-                                                            reel.liked
+                                                            p.liked
                                                                 ? "red"
-                                                                : "white"
+                                                                : "black"
                                                         }
                                                     />
 
-                                                </button>
+                                                    <span className="text-sm font-semibold">
+                                                        {p.likes}
+                                                    </span>
+
+                                                </div>
 
 
-                                                <span className="text-white text-xs font-semibold">
-                                                    {reel.likes}
-                                                </span>
+                                                {/* COMMENT */}
 
-                                            </div>
-
-
-                                            {/* COMMENT */}
-
-                                            <div className="flex flex-col items-center">
-
-                                                <button
+                                                <div
+                                                    className="flex items-center gap-1 cursor-pointer"
                                                     onClick={() =>
                                                         setHide(
-                                                            hide ===
-                                                                `reel-${reel.id}`
+                                                            hide === p.id
                                                                 ? null
-                                                                : `reel-${reel.id}`
+                                                                : p.id
                                                         )
                                                     }
                                                 >
 
                                                     <MessageCircle
-                                                        size={30}
-                                                        color="white"
+                                                        size={20}
                                                     />
 
-                                                </button>
+                                                    <span className="text-sm font-semibold">
+                                                        {
+                                                            currentComments.length
+                                                        }
+                                                    </span>
 
-
-                                                <span className="text-white text-xs font-semibold">
-                                                    {
-                                                        currentReelComments.length
-                                                    }
-                                                </span>
-
-                                            </div>
-
-                                        </div>
-
-
-                                        {/* USER INFO */}
-
-                                        <div className="absolute bottom-10 left-4">
-
-                                            <div className="flex items-center gap-4">
-
-                                                <img
-                                                    src={
-                                                        user?.avatar
-                                                    }
-                                                    alt=""
-                                                    className="w-15 h-15 rounded-full object-cover"
-                                                />
-
-                                                <p className="text-white font-semibold text-sm">
-                                                    {user?.username}
-                                                </p>
-                                                <p className="bg-black">{reel.caption}</p>
+                                                </div>
 
                                             </div>
 
-                                        </div>
 
+                                            {/* ================================================= */}
+                                            {/* POST COMMENT POPUP */}
+                                            {/* ================================================= */}
 
-                                        {/* ================================================= */}
-                                        {/* REEL COMMENT POPUP */}
-                                        {/* ================================================= */}
-
-                                        {hide ===
-                                            `reel-${reel.id}` && (
+                                            {hide === p.id && (
 
                                                 <div className="fixed inset-0 z-50 flex items-end justify-center">
 
-                                                    <div className="bg-white w-[400px] h-[60vh] rounded-t-xl p-5">
-
+                                                    <div className="bg-white w-[400px] h-[60vh] rounded-t-xl p-5 shadow-lg">
 
                                                         {/* HEADER */}
 
@@ -847,8 +560,367 @@ const ProfilePage = () => {
 
                                                         <div className="mt-4 h-[40vh] overflow-y-auto">
 
-                                                            {currentReelComments.length >
-                                                                0 ? (
+                                                            {currentComments.length > 0 ? (
+
+                                                                currentComments.map(
+                                                                    (comment) => (
+
+                                                                        <div
+                                                                            key={
+                                                                                comment.id
+                                                                            }
+                                                                            className="py-2 border-b flex items-center gap-5"
+                                                                        >
+
+                                                                            <img
+                                                                                src={
+                                                                                    storedUser?.avatar
+                                                                                }
+                                                                                alt=""
+                                                                                className="w-10 h-10 rounded-full object-cover"
+                                                                            />
+
+                                                                            <p className="text-sm">
+                                                                                {
+                                                                                    comment.text
+                                                                                }
+                                                                            </p>
+
+                                                                        </div>
+
+                                                                    )
+                                                                )
+
+                                                            ) : (
+
+                                                                <p className="text-gray-500 text-sm">
+                                                                    No comments yet
+                                                                </p>
+
+                                                            )}
+
+                                                        </div>
+
+
+                                                        {/* INPUT */}
+
+                                                        <div className="flex gap-2 mt-4">
+
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Add a comment..."
+                                                                value={
+                                                                    postInput
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setPostInput(
+                                                                        e.target.value
+                                                                    )
+                                                                }
+                                                                className="flex-1 border rounded-lg px-3 py-2 outline-none"
+                                                            />
+
+                                                            <button
+                                                                onClick={() =>
+                                                                    postComment(
+                                                                        p.id
+                                                                    )
+                                                                }
+                                                                className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                                                            >
+                                                                Post
+                                                            </button>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            )}
+
+
+                                            {/* CAPTION */}
+
+                                            <div className="pt-2">
+
+                                                <p className="text-sm">
+
+                                                    <span className="font-semibold">
+                                                        {user.username}
+                                                    </span>
+
+                                                    {" "}
+
+                                                    {p.caption}
+
+                                                </p>
+
+                                            </div>
+
+
+                                            {/* TIMESTAMP */}
+
+                                            <div className="pt-2">
+
+                                                <p className="text-xs text-gray-500">
+                                                    {p.timestamp}
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    );
+
+                                })}
+
+                            </div>
+
+                        )
+
+                    ) : (
+
+                        <div className="flex justify-center items-center py-20">
+
+                            <p className="text-gray-600">
+                                No posts yet
+                            </p>
+
+                        </div>
+
+                    )}
+
+                </div>
+
+            )}
+
+
+            {/* ================================================= */}
+            {/* REELS */}
+            {/* ================================================= */}
+
+            {activeTab === "reels" && (
+
+                <div className="max-w-[380px] mx-auto">
+
+                    {userReels.length > 0 ? (
+
+                        grid ? (
+
+                            /* ================= GRID VIEW ================= */
+
+                            <div className="grid grid-cols-2 gap-1 py-2">
+
+                                {userReels.map((reel) => (
+
+                                    <div
+                                        key={reel.id}
+                                        className="w-[150px] h-[150px]"
+                                    >
+
+                                        <video
+                                            src={reel.reel}
+                                            muted
+                                            playsInline
+                                            loop
+                                            onClick={() =>
+                                                setGrid(false)
+                                            }
+                                            className="w-[150px] h-[150px] object-cover cursor-pointer"
+                                        />
+
+                                    </div>
+
+                                ))}
+
+                            </div>
+
+                        ) : (
+
+                            /* ================= NORMAL VIEW ================= */
+
+                            <div className="flex flex-col">
+
+                                {userReels.map((reel) => {
+
+                                    const currentReelComments =
+                                        reelComments.find(
+                                            (item) =>
+                                                item.id === reel.id
+                                        )?.comments || [];
+
+                                    return (
+
+                                        <div
+                                            key={reel.id}
+                                            className="relative w-full bg-white"
+                                        >
+
+                                            {/* VIDEO */}
+
+                                            <video
+                                                src={reel.reel}
+                                                autoPlay
+                                                loop
+                                                playsInline
+                                                onClick={(e) => {
+
+                                                    setGrid(true);
+
+                                                    if (
+                                                        e.currentTarget.paused
+                                                    ) {
+                                                        e.currentTarget.play();
+                                                    } else {
+                                                        e.currentTarget.pause();
+                                                    }
+
+                                                }}
+                                                className="w-[370px] h-[70vh] object-cover cursor-pointer"
+                                            />
+
+
+                                            {/* RIGHT SIDE */}
+
+                                            <div className="absolute right-3 bottom-10 flex flex-col items-center gap-5">
+
+
+                                                {/* LIKE */}
+
+                                                <div className="flex flex-col items-center">
+
+                                                    <button
+                                                        onClick={() =>
+                                                            reelLikeButton(
+                                                                reel.id
+                                                            )
+                                                        }
+                                                        className="cursor-pointer"
+                                                    >
+
+                                                        <Heart
+                                                            size={30}
+                                                            fill={
+                                                                reel.liked
+                                                                    ? "red"
+                                                                    : "white"
+                                                            }
+                                                            color={
+                                                                reel.liked
+                                                                    ? "red"
+                                                                    : "white"
+                                                            }
+                                                        />
+
+                                                    </button>
+
+                                                    <span className="text-white text-xs font-semibold">
+                                                        {reel.likes}
+                                                    </span>
+
+                                                </div>
+
+
+                                                {/* COMMENT */}
+
+                                                <div className="flex flex-col items-center">
+
+                                                    <button
+                                                        onClick={() =>
+                                                            setHide(
+                                                                hide ===
+                                                                    `reel-${reel.id}`
+                                                                    ? null
+                                                                    : `reel-${reel.id}`
+                                                            )
+                                                        }
+                                                    >
+
+                                                        <MessageCircle
+                                                            size={30}
+                                                            color="white"
+                                                        />
+
+                                                    </button>
+
+                                                    <span className="text-white text-xs font-semibold">
+                                                        {
+                                                            currentReelComments.length
+                                                        }
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            {/* USER INFO */}
+
+                                            <div className="absolute bottom-10 left-4">
+
+                                                <div className="flex items-center gap-4">
+
+                                                    <img
+                                                        src={
+                                                            user?.avatar
+                                                        }
+                                                        alt=""
+                                                        className="w-12 h-12 rounded-full object-cover"
+                                                    />
+
+                                                    <div>
+
+                                                        <p className="text-white font-semibold text-sm">
+                                                            {user?.username}
+                                                        </p>
+
+                                                        <p className="text-white text-sm bg-black/50">
+                                                            {reel.caption}
+                                                        </p>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            {/* ================================================= */}
+                                            {/* REEL COMMENT POPUP */}
+                                            {/* ================================================= */}
+
+                                            {hide ===
+                                                `reel-${reel.id}` && (
+
+                                                <div className="fixed inset-0 z-50 flex items-end justify-center">
+
+                                                    <div className="bg-white w-[400px] h-[60vh] rounded-t-xl p-5">
+
+                                                        {/* HEADER */}
+
+                                                        <div className="flex items-center justify-between border-b pb-3">
+
+                                                            <h2 className="text-lg font-bold">
+                                                                Comments
+                                                            </h2>
+
+                                                            <button
+                                                                onClick={() =>
+                                                                    setHide(null)
+                                                                }
+                                                            >
+                                                                <X size={22} />
+                                                            </button>
+
+                                                        </div>
+
+
+                                                        {/* COMMENTS */}
+
+                                                        <div className="mt-4 h-[40vh] overflow-y-auto">
+
+                                                            {currentReelComments.length > 0 ? (
 
                                                                 currentReelComments.map(
                                                                     (comment) => (
@@ -908,7 +980,6 @@ const ProfilePage = () => {
                                                                 className="flex-1 border rounded-lg px-3 py-2 outline-none"
                                                             />
 
-
                                                             <button
                                                                 onClick={() =>
                                                                     postReelComment(
@@ -928,13 +999,15 @@ const ProfilePage = () => {
 
                                             )}
 
-                                    </div>
+                                        </div>
 
-                                );
+                                    );
 
-                            })}
+                                })}
 
-                        </div>
+                            </div>
+
+                        )
 
                     ) : (
 
