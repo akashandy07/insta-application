@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
     Clapperboard,
@@ -6,40 +5,124 @@ import {
     User
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import akash from "../assets/akash.jpeg";
+
+const DEFAULT_USER = {
+    id: 0,
+    name: "AKASH",
+    username: "AKASH07",
+    pronouns: "",
+    bio: "FRONTEND DEVELOPER",
+    links: "",
+    avatar: akash,
+    followers: 0,
+    following: 0
+};
 
 const UserProfile = () => {
 
-    // Get user from localStorage
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-
     const navigate = useNavigate();
 
-    // Edit form visibility
-    const [hide, setHide] = useState(false);
+    // ==========================================
+    // GET USER FROM LOCAL STORAGE
+    // ==========================================
 
-    // Active profile tab
-    const [activeTab, setActiveTab] = useState("posts");
+    const getStoredUser = () => {
 
-    // Image states
-    const [image, setImage] = useState(null);
+        const savedUser =
+            localStorage.getItem("user");
 
-    const [preview, setPreview] = useState(
-        storedUser?.avatar || null
-    );
+        if (!savedUser) {
+            return DEFAULT_USER;
+        }
 
-    // Form states
+        try {
+
+            const parsedUser =
+                JSON.parse(savedUser);
+
+            return {
+                ...DEFAULT_USER,
+                ...parsedUser,
+
+                // If localStorage has no avatar,
+                // use akash image
+                avatar:
+                    parsedUser.avatar ||
+                    akash
+            };
+
+        } catch (error) {
+
+            return DEFAULT_USER;
+
+        }
+    };
+
+    const [storedUser, setStoredUser] =
+        useState(getStoredUser);
+
+    // ==========================================
+    // EDIT FORM
+    // ==========================================
+
+    const [hide, setHide] =
+        useState(false);
+
+    // ==========================================
+    // PROFILE TAB
+    // ==========================================
+
+    const [activeTab, setActiveTab] =
+        useState("posts");
+
+    // ==========================================
+    // IMAGE
+    // ==========================================
+
+    const [image, setImage] =
+        useState(null);
+
+    const [preview, setPreview] =
+        useState(
+            storedUser.avatar ||
+            akash
+        );
+
+    // ==========================================
+    // FORM DATA
+    // ==========================================
+
     const [forms, setForms] = useState([
         {
-            name: storedUser?.name || "",
-            username: storedUser?.username || "",
-            pronouns: storedUser?.pronouns || "",
-            bio: storedUser?.bio || "",
-            links: storedUser?.links || "",
+            name:
+                storedUser.name ||
+                DEFAULT_USER.name,
+
+            username:
+                storedUser.username ||
+                DEFAULT_USER.username,
+
+            pronouns:
+                storedUser.pronouns || "",
+
+            bio:
+                storedUser.bio ||
+                DEFAULT_USER.bio,
+
+            links:
+                storedUser.links || "",
         }
     ]);
 
-    // Handle text input changes
-    const handleChange = (field, value) => {
+    // ==========================================
+    // HANDLE INPUT CHANGE
+    // ==========================================
+
+    const handleChange = (
+        field,
+        value
+    ) => {
 
         setForms((prev) =>
             prev.map((form, index) =>
@@ -54,111 +137,168 @@ const UserProfile = () => {
 
     };
 
-    // Handle image upload
+    // ==========================================
+    // HANDLE IMAGE
+    // ==========================================
+
     function handleImageChange(e) {
 
-        const file = e.target.files[0];
+        const file =
+            e.target.files[0];
 
         if (!file) return;
 
         setImage(file);
 
-        const reader = new FileReader();
+        const reader =
+            new FileReader();
 
         reader.onloadend = () => {
-            setPreview(reader.result);
+
+            setPreview(
+                reader.result
+            );
+
         };
 
         reader.readAsDataURL(file);
     }
 
-    // Submit profile
+    // ==========================================
+    // SUBMIT PROFILE
+    // ==========================================
+
     function handler(e) {
 
         e.preventDefault();
 
         const updatedUser = {
+
             ...storedUser,
 
-            name: forms[0].name,
-            username: forms[0].username,
-            pronouns: forms[0].pronouns,
-            bio: forms[0].bio,
-            links: forms[0].links,
+            name:
+                forms[0].name ||
+                DEFAULT_USER.name,
 
-            // Save image as base64
-            avatar: preview
+            username:
+                forms[0].username ||
+                DEFAULT_USER.username,
+
+            pronouns:
+                forms[0].pronouns,
+
+            bio:
+                forms[0].bio ||
+                DEFAULT_USER.bio,
+
+            links:
+                forms[0].links,
+
+            // Uploaded image if available.
+            // Otherwise keep current image.
+            // If nothing exists, use akash.
+            avatar:
+                preview ||
+                storedUser.avatar ||
+                akash
         };
 
-        // Save updated user
+        // ==========================================
+        // SAVE TO LOCAL STORAGE
+        // ==========================================
+
         localStorage.setItem(
             "user",
             JSON.stringify(updatedUser)
         );
 
-        // Close edit form
+        // ==========================================
+        // UPDATE STATE
+        // ==========================================
+
+        setStoredUser(
+            updatedUser
+        );
+
+        setPreview(
+            updatedUser.avatar ||
+            akash
+        );
+
+        // ==========================================
+        // CLOSE EDIT
+        // ==========================================
+
         setHide(false);
 
-        console.log("Updated User:", updatedUser);
-        console.log("Image File:", image);
+        console.log(
+            "Updated User:",
+            updatedUser
+        );
+
     }
+
+    // ==========================================
+    // RETURN
+    // ==========================================
 
     return (
 
-        <div className="w-[400px] mx-auto overflow-x-auto scrollbar-none">
+        <div className="w-[400px] max-w-full mx-auto overflow-x-hidden scrollbar-none">
 
-            <div className="max-w-[380px] mx-auto">
+            <div className="w-[calc(100%-20px)] max-w-[380px] mx-auto">
 
-                {/* ================= PROFILE ================= */}
+                {/* ================================================= */}
+                {/* PROFILE */}
+                {/* ================================================= */}
 
                 {!hide && (
+
                     <>
 
+                        {/* ========================================= */}
                         {/* PROFILE HEADER */}
+                        {/* ========================================= */}
 
-                        <div className="flex gap-7 pt-7 max-w-[410px] mx-auto items-center">
+                        <div className="flex gap-7 pt-7 items-center">
 
                             {/* PROFILE IMAGE */}
 
-                            <div className="flex flex-col w-[120px]">
+                            <div className="flex flex-col w-[120px] flex-shrink-0">
 
                                 <div
-                                    onClick={() => setHide(true)}
+                                    onClick={() =>
+                                        setHide(true)
+                                    }
                                     className="cursor-pointer"
                                 >
 
-                                    {preview ? (
-
-                                        <img
-                                            src={preview}
-                                            alt="profile"
-                                            className="w-24 h-24 rounded-full object-cover"
-                                        />
-
-                                    ) : (
-
-                                        <span className="text-sm text-gray-500">
-                                            Update Your Profile
-                                        </span>
-
-                                    )}
+                                    <img
+                                        src={
+                                            preview ||
+                                            akash
+                                        }
+                                        alt="profile"
+                                        className="w-24 h-24 rounded-full object-cover"
+                                    />
 
                                 </div>
 
                             </div>
 
 
+                            {/* ================================= */}
                             {/* USER DETAILS */}
+                            {/* ================================= */}
 
                             <div className="flex flex-col justify-between items-start">
 
-                                <div>
+                                <p className="text-sm text-gray-500">
 
-                                    <p className="text-sm text-gray-500">
-                                        {forms[0].username}
-                                    </p>
+                                    {forms[0].username ||
+                                        DEFAULT_USER.username}
 
-                                </div>
+                                </p>
 
 
                                 {/* PROFILE COUNTS */}
@@ -167,11 +307,11 @@ const UserProfile = () => {
 
                                     <div>
 
-                                        <h1 className="font-medium">
+                                        <h1 className="font-medium text-sm">
                                             0
                                         </h1>
 
-                                        <h1 className="font-medium">
+                                        <h1 className="font-medium text-xs">
                                             posts
                                         </h1>
 
@@ -180,11 +320,11 @@ const UserProfile = () => {
 
                                     <div>
 
-                                        <h1 className="font-medium">
-                                            0
+                                        <h1 className="font-medium text-sm">
+                                            {storedUser.followers || 0}
                                         </h1>
 
-                                        <h1 className="font-medium">
+                                        <h1 className="font-medium text-xs">
                                             followers
                                         </h1>
 
@@ -193,16 +333,21 @@ const UserProfile = () => {
 
                                     <div
                                         onClick={() =>
-                                            navigate("/ShowFollow")
+                                            navigate(
+                                                "/ShowFollow"
+                                            )
                                         }
                                         className="cursor-pointer"
                                     >
 
-                                        <h2 className="font-medium">
-                                            {storedUser?.following || 0}
+                                        <h2 className="font-medium text-sm">
+
+                                            {storedUser.following ||
+                                                0}
+
                                         </h2>
 
-                                        <h2 className="font-medium">
+                                        <h2 className="font-medium text-xs">
                                             following
                                         </h2>
 
@@ -215,42 +360,64 @@ const UserProfile = () => {
                         </div>
 
 
-                        {/* BIO */}
+                        {/* ========================================= */}
+                        {/* NAME + BIO */}
+                        {/* ========================================= */}
 
                         <div className="pt-3">
 
-                            <h1>
-                                {forms[0].bio}
+                            <h1 className="font-semibold text-sm">
+
+                                {forms[0].name ||
+                                    DEFAULT_USER.name}
+
                             </h1>
 
-                            <h1>
-                                {forms[0].links}
-                            </h1>
+                            <p className="text-sm">
+
+                                {forms[0].bio ||
+                                    DEFAULT_USER.bio}
+
+                            </p>
+
+                            {forms[0].links && (
+
+                                <p className="text-sm text-blue-500">
+
+                                    {forms[0].links}
+
+                                </p>
+
+                            )}
 
                         </div>
 
 
+                        {/* ========================================= */}
                         {/* BUTTONS */}
+                        {/* ========================================= */}
 
-                        <div className="flex gap-3 text-center pt-8">
+                        <div className="flex gap-2 pt-5">
 
                             <button
-                                onClick={() => setHide(true)}
-                                className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg w-[170px] hover:bg-blue-600"
+                                onClick={() =>
+                                    setHide(true)
+                                }
+                                className="px-4 py-2 bg-blue-500 text-white rounded-lg w-[150px] text-sm"
                             >
                                 Edit
                             </button>
 
 
                             <button
-                                className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg w-[170px] hover:bg-blue-600"
+                                className="px-4 py-2 bg-blue-500 text-white rounded-lg w-[150px] text-sm"
                             >
                                 Message
                             </button>
 
 
                             <button
-                                className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg w-[40px] hover:bg-blue-600"
+                                className="px-3 py-2 bg-blue-500 text-white rounded-lg w-[40px] text-sm"
                             >
                                 +
                             </button>
@@ -258,9 +425,11 @@ const UserProfile = () => {
                         </div>
 
 
-                        {/* ================= PROFILE TABS ================= */}
+                        {/* ========================================= */}
+                        {/* PROFILE TABS */}
+                        {/* ========================================= */}
 
-                        <div className="flex justify-between items-center pt-6 border-b border-t border-gray-300  border-gray-300 mt-5 items-center text-center">
+                        <div className="flex justify-between items-center pt-6 border-b border-t border-gray-300 mt-5 text-center">
 
                             {/* POSTS */}
 
@@ -270,11 +439,13 @@ const UserProfile = () => {
                                 }
                                 className={
                                     activeTab === "posts"
-                                        ? "border-b-2 border-black pb-3 "
+                                        ? "border-b-2 border-black pb-3"
                                         : "pb-3"
                                 }
                             >
+
                                 <Menu size={26} />
+
                             </button>
 
 
@@ -290,7 +461,11 @@ const UserProfile = () => {
                                         : "pb-3"
                                 }
                             >
-                                <Clapperboard size={26} />
+
+                                <Clapperboard
+                                    size={26}
+                                />
+
                             </button>
 
 
@@ -306,31 +481,35 @@ const UserProfile = () => {
                                         : "pb-3"
                                 }
                             >
+
                                 <User size={26} />
+
                             </button>
 
                         </div>
 
 
-                        {/* ================= TAB CONTENT ================= */}
+                        {/* ========================================= */}
+                        {/* TAB CONTENT */}
+                        {/* ========================================= */}
 
                         <div className="flex justify-center items-center py-16">
 
                             {activeTab === "posts" ? (
 
-                                <p className="text-gray-500">
+                                <p className="text-gray-500 text-sm">
                                     No posts available
                                 </p>
 
                             ) : activeTab === "reels" ? (
 
-                                <p className="text-gray-500">
+                                <p className="text-gray-500 text-sm">
                                     No reels available
                                 </p>
 
                             ) : (
 
-                                <p className="text-gray-500">
+                                <p className="text-gray-500 text-sm">
                                     No tagged posts available
                                 </p>
 
@@ -339,10 +518,13 @@ const UserProfile = () => {
                         </div>
 
                     </>
+
                 )}
 
 
-                {/* ================= EDIT FORM ================= */}
+                {/* ================================================= */}
+                {/* EDIT FORM */}
+                {/* ================================================= */}
 
                 {hide && (
 
@@ -350,159 +532,185 @@ const UserProfile = () => {
 
                         <form
                             onSubmit={handler}
-                            className="flex flex-col gap-4"
+                            className="flex flex-col gap-5"
                         >
 
+                            {/* ================================= */}
                             {/* IMAGE */}
+                            {/* ================================= */}
 
-                            <div className="flex flex-col items-center gap-2 mb-4">
+                            <div className="flex flex-col items-center gap-3 mb-4">
 
-                                {preview && (
-
-                                    <img
-                                        src={preview}
-                                        alt="Preview"
-                                        className="w-24 h-24 rounded-full object-cover"
-                                    />
-
-                                )}
+                                <img
+                                    src={
+                                        preview ||
+                                        akash
+                                    }
+                                    alt="Preview"
+                                    className="w-24 h-24 rounded-full object-cover"
+                                />
 
                                 <input
                                     type="file"
                                     accept="image/*"
-                                    onChange={handleImageChange}
+                                    onChange={
+                                        handleImageChange
+                                    }
+                                    className="text-sm"
                                 />
 
                             </div>
 
 
+                            {/* ================================= */}
                             {/* NAME */}
+                            {/* ================================= */}
 
-                            <div className="flex gap-6 items-center">
+                            <div className="flex gap-4 items-center">
 
-                                <label className="w-24">
+                                <label className="w-24 text-sm">
                                     Name:
                                 </label>
 
                                 <input
                                     type="text"
                                     placeholder="Enter Your Name"
-                                    value={forms[0].name}
+                                    value={
+                                        forms[0].name
+                                    }
                                     onChange={(e) =>
                                         handleChange(
                                             "name",
                                             e.target.value
                                         )
                                     }
-                                    className="border-b px-2 py-1 flex-1"
+                                    className="border-b px-2 py-1 flex-1 text-sm outline-none"
                                 />
 
                             </div>
 
 
+                            {/* ================================= */}
                             {/* USERNAME */}
+                            {/* ================================= */}
 
-                            <div className="flex gap-6 items-center">
+                            <div className="flex gap-4 items-center">
 
-                                <label className="w-24">
+                                <label className="w-24 text-sm">
                                     Username:
                                 </label>
 
                                 <input
                                     type="text"
                                     placeholder="Enter Your Username"
-                                    value={forms[0].username}
+                                    value={
+                                        forms[0].username
+                                    }
                                     onChange={(e) =>
                                         handleChange(
                                             "username",
                                             e.target.value
                                         )
                                     }
-                                    className="border-b px-2 py-1 flex-1"
+                                    className="border-b px-2 py-1 flex-1 text-sm outline-none"
                                 />
 
                             </div>
 
 
+                            {/* ================================= */}
                             {/* PRONOUNS */}
+                            {/* ================================= */}
 
-                            <div className="flex gap-6 items-center">
+                            <div className="flex gap-4 items-center">
 
-                                <label className="w-24">
+                                <label className="w-24 text-sm">
                                     Pronouns:
                                 </label>
 
                                 <input
                                     type="text"
                                     placeholder="Enter Your Pronouns"
-                                    value={forms[0].pronouns}
+                                    value={
+                                        forms[0].pronouns
+                                    }
                                     onChange={(e) =>
                                         handleChange(
                                             "pronouns",
                                             e.target.value
                                         )
                                     }
-                                    className="border-b px-2 py-1 flex-1"
+                                    className="border-b px-2 py-1 flex-1 text-sm outline-none"
                                 />
 
                             </div>
 
 
+                            {/* ================================= */}
                             {/* BIO */}
+                            {/* ================================= */}
 
-                            <div className="flex gap-6 items-center">
+                            <div className="flex gap-4 items-center">
 
-                                <label className="w-24">
+                                <label className="w-24 text-sm">
                                     Bio:
                                 </label>
 
                                 <input
                                     type="text"
                                     placeholder="Enter Your Bio"
-                                    value={forms[0].bio}
+                                    value={
+                                        forms[0].bio
+                                    }
                                     onChange={(e) =>
                                         handleChange(
                                             "bio",
                                             e.target.value
                                         )
                                     }
-                                    className="border-b px-2 py-1 flex-1"
+                                    className="border-b px-2 py-1 flex-1 text-sm outline-none"
                                 />
 
                             </div>
 
 
+                            {/* ================================= */}
                             {/* LINKS */}
+                            {/* ================================= */}
 
-                            <div className="flex gap-6 items-center">
+                            <div className="flex gap-4 items-center">
 
-                                <label className="w-24">
+                                <label className="w-24 text-sm">
                                     Links:
                                 </label>
 
                                 <input
                                     type="text"
                                     placeholder="Enter Your Links"
-                                    value={forms[0].links}
+                                    value={
+                                        forms[0].links
+                                    }
                                     onChange={(e) =>
                                         handleChange(
                                             "links",
                                             e.target.value
                                         )
                                     }
-                                    className="border-b px-2 py-1 flex-1"
+                                    className="border-b px-2 py-1 flex-1 text-sm outline-none"
                                 />
 
                             </div>
 
 
-                            {/* SUBMIT / CANCEL */}
+                            {/* ================================= */}
+                            {/* BUTTONS */}
+                            {/* ================================= */}
 
-                            <div className="flex gap-4 items-center">
+                            <div className="flex gap-3 pt-3">
 
                                 <button
                                     type="submit"
-                                    className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                    className="px-6 py-2 bg-blue-500 text-white rounded-lg text-sm"
                                 >
                                     Submit
                                 </button>
@@ -513,7 +721,7 @@ const UserProfile = () => {
                                     onClick={() =>
                                         setHide(false)
                                     }
-                                    className="px-6 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                                    className="px-6 py-2 bg-gray-300 rounded-lg text-sm"
                                 >
                                     Cancel
                                 </button>

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { users } from "../data/users";
 import { useNavigate } from "react-router-dom";
@@ -6,23 +5,65 @@ import StoryPage from "./StoryPage";
 import { useLikeLogic } from "../custom/LikeLogic";
 import { Heart, MessageCircle, X } from "lucide-react";
 import { useCommentPage } from "../custom/CommentLogics";
+import akash from "../assets/akash.jpeg";
 
 const PostPage = () => {
+
+    // ==========================================
+    // GET USER
+    // ==========================================
 
     const getUser = (userId) =>
         users.find((user) => user.id === userId);
 
-    const { postData, likeButton } = useLikeLogic();
+    // ==========================================
+    // LIKE LOGIC
+    // ==========================================
 
-    const { comments, postComment, setInput, input } = useCommentPage();
+    const {
+        postData,
+        likeButton
+    } = useLikeLogic();
+
+    // ==========================================
+    // COMMENT LOGIC
+    // ==========================================
+
+    const {
+        comments,
+        postComment,
+        setInput,
+        input
+    } = useCommentPage();
+
+    // ==========================================
+    // STATES
+    // ==========================================
 
     const [hide, setHide] = useState(null);
-    const navigate = useNavigate();
-    const storedUser = JSON.parse(localStorage.getItem("user"));
 
+    const navigate = useNavigate();
+
+    // ==========================================
+    // STORED USER
+    // ==========================================
+
+    const storedUser = JSON.parse(
+        localStorage.getItem("user")
+    );
+
+    // ==========================================
+    // DEFAULT AVATAR
+    // ==========================================
+
+    const userAvatar =
+        storedUser?.avatar || akash;
 
     return (
+
         <div className="w-[400px] mx-auto overflow-y-auto">
+
+            {/* STORY */}
 
             <StoryPage />
 
@@ -32,19 +73,38 @@ const PostPage = () => {
 
                     const user = getUser(i.userId);
 
+                    // ==========================================
+                    // GET COMMENTS FOR THIS POST
+                    // ==========================================
+
+                    const currentComments =
+                        comments.find(
+                            (post) =>
+                                post.id === i.id
+                        )?.comments || [];
+
                     return (
+
                         <div
                             key={i.id}
                             className="mb-6 border-b border-gray-200 pb-6"
                         >
 
-                            {/* USER HEADER */}
+                            {/* ==========================================
+                                USER HEADER
+                            ========================================== */}
 
                             <div className="flex items-center gap-3 mb-3">
 
                                 <img
-                                    src={user?.avatar}
-                                    alt={user?.username}
+                                    src={
+                                        user?.avatar ||
+                                        akash
+                                    }
+                                    alt={
+                                        user?.username ||
+                                        "user"
+                                    }
                                     onClick={() =>
                                         navigate(
                                             `/ProfilePage/${user?.id}`
@@ -55,12 +115,16 @@ const PostPage = () => {
 
                                 <div>
 
-                                    <h3 className="font-semibold">
+                                    <h3 className="font-semibold text-sm">
+
                                         {user?.username}
+
                                     </h3>
 
                                     <p className="text-xs text-gray-500">
+
                                         {user?.name}
+
                                     </p>
 
                                 </div>
@@ -68,7 +132,9 @@ const PostPage = () => {
                             </div>
 
 
-                            {/* POST IMAGE */}
+                            {/* ==========================================
+                                POST IMAGE
+                            ========================================== */}
 
                             <img
                                 src={i.image}
@@ -77,7 +143,9 @@ const PostPage = () => {
                             />
 
 
-                            {/* LIKE & COMMENT */}
+                            {/* ==========================================
+                                LIKE & COMMENT
+                            ========================================== */}
 
                             <div className="flex gap-5 pt-3">
 
@@ -104,8 +172,10 @@ const PostPage = () => {
                                         }
                                     />
 
-                                    <span className="text-sm font-semibold">
+                                    <span className="text-xs font-semibold">
+
                                         {i.likes}
+
                                     </span>
 
                                 </div>
@@ -124,10 +194,14 @@ const PostPage = () => {
                                     }
                                 >
 
-                                    <MessageCircle size={20} />
+                                    <MessageCircle
+                                        size={20}
+                                    />
 
-                                    <span className="text-sm font-semibold">
-                                        {comments.find(post => post.id === i.id)?.comments?.length || 0}
+                                    <span className="text-xs font-semibold">
+
+                                        {currentComments.length}
+
                                     </span>
 
                                 </div>
@@ -135,42 +209,54 @@ const PostPage = () => {
                             </div>
 
 
-                            {/* CAPTION */}
+                            {/* ==========================================
+                                CAPTION
+                            ========================================== */}
 
                             <div className="mt-2">
 
-                                <h1 className="font-semibold">
+                                <h1 className="font-semibold text-sm">
+
                                     {i.caption}
+
                                 </h1>
 
                             </div>
 
 
-                            {/* TIMESTAMP */}
+                            {/* ==========================================
+                                TIMESTAMP
+                            ========================================== */}
 
                             <div className="mt-1">
 
-                                <h1 className="text-sm text-gray-500">
+                                <h1 className="text-xs text-gray-500">
+
                                     {i.timestamp}
+
                                 </h1>
 
                             </div>
 
 
-                            {/* COMMENT POPUP */}
+                            {/* ==========================================
+                                COMMENT POPUP
+                            ========================================== */}
 
                             {hide === i.id && (
 
-                                <div className=" fixed bottom-18 flex items-center justify-center z-30 overflow-y-auto">
+                                <div className="fixed inset-0   z-30 flex items-end justify-center bg-black/30 z-50">
 
-                                    <div className="bg-white w-[380px] h-[60vh]  rounded-xl p-5 shadow-lg">
+                                    <div className="bg-white w-[380px] h-[60vh] rounded-t-xl p-5 shadow-lg">
 
                                         {/* HEADER */}
 
                                         <div className="flex items-center justify-between border-b pb-3">
 
-                                            <h2 className="text-lg font-bold">
+                                            <h2 className="text-base font-bold">
+
                                                 Comments
+
                                             </h2>
 
                                             <button
@@ -178,56 +264,75 @@ const PostPage = () => {
                                                     setHide(null)
                                                 }
                                             >
+
                                                 <X size={22} />
+
                                             </button>
 
                                         </div>
 
 
-                                        {/* COMMENTS */}
+                                        {/* ==========================================
+                                            COMMENTS
+                                        ========================================== */}
 
-                                        <div className="mt-4 max-h-[400px] overflow-y-auto">
+                                        <div className="mt-4 h-[40vh] overflow-y-auto">
 
-                                            {comments
-                                                .find(
-                                                    (post) =>
-                                                        post.id === i.id
-                                                )
-                                                ?.comments?.length > 0 ? (
+                                            {currentComments.length > 0 ? (
 
-                                                comments
-                                                    .find(
-                                                        (post) =>
-                                                            post.id === i.id
-                                                    )
-                                                    .comments.map(
-                                                        (comment) => (
+                                                currentComments.map(
+                                                    (comment) => (
 
-                                                            <div key={comment.id} className="py-2 border-b flex items-center gap-5">
-                                                                <div>
-                                                                    <img
-                                                                        src={storedUser?.avatar}
-                                                                        alt={storedUser?.username}
-                                                                        className="w-10 h-10 rounded-full object-cover"
-                                                                    />
-                                                                </div>
-                                                                <p className="text-sm">
+                                                        <div
+                                                            key={
+                                                                comment.id
+                                                            }
+                                                            className="py-2 border-b flex items-center gap-5"
+                                                        >
+
+                                                            {/* MY DEFAULT AVATAR */}
+
+                                                            <img
+                                                                src={
+                                                                    userAvatar
+                                                                }
+                                                                alt={
+                                                                    storedUser?.username ||
+                                                                    "user"
+                                                                }
+                                                                className="w-10 h-10 rounded-full object-cover"
+                                                            />
+
+                                                            <div>
+
+                                                                <p className="text-xs font-semibold">
+
+                                                                    {storedUser?.username ||
+                                                                        "username"}
+
+                                                                </p>
+
+                                                                <p className="text-xs">
+
                                                                     {
                                                                         comment.text
-
                                                                     }
+
                                                                 </p>
-                                                                <h1>{ }</h1>
 
                                                             </div>
 
-                                                        )
+                                                        </div>
+
                                                     )
+                                                )
 
                                             ) : (
 
-                                                <p className="text-gray-500 text-sm">
+                                                <p className="text-xs text-gray-500">
+
                                                     No comments yet
+
                                                 </p>
 
                                             )}
@@ -235,9 +340,11 @@ const PostPage = () => {
                                         </div>
 
 
-                                        {/* INPUT */}
+                                        {/* ==========================================
+                                            INPUT
+                                        ========================================== */}
 
-                                        <div className="flex gap-2 mt-4 h-1000px">
+                                        <div className="flex gap-2 mt-4 ">
 
                                             <input
                                                 type="text"
@@ -248,16 +355,20 @@ const PostPage = () => {
                                                         e.target.value
                                                     )
                                                 }
-                                                className="flex-1 border rounded-lg px-3 py-2 outline-none"
+                                                className="flex-1 border rounded-lg px-3 py-2 outline-none text-sm"
                                             />
 
                                             <button
-                                                onClick={() =>
-                                                    postComment(i.id)
-                                                }
-                                                className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                                                onClick={() => {
+                                                    postComment(
+                                                        i.id
+                                                    );
+                                                }}
+                                                className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm"
                                             >
+
                                                 Post
+
                                             </button>
 
                                         </div>
@@ -269,7 +380,9 @@ const PostPage = () => {
                             )}
 
                         </div>
+
                     );
+
                 })}
 
             </div>

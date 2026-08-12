@@ -1,51 +1,102 @@
-
 import { useEffect, useState } from "react";
 import { posts } from "../data/posts";
 
 export const useCommentPage = () => {
+
+    // ================= COMMENTS =================
+
     const [comments, setComments] = useState(() => {
-        const savedComments = localStorage.getItem("comments");
+
+        const savedComments =
+            localStorage.getItem("comments");
 
         if (savedComments) {
             return JSON.parse(savedComments);
         }
 
-        return posts;
+        // Create initial comments structure
+        return posts.map((post) => ({
+            ...post,
+            comments: Array.isArray(post.comments)
+                ? post.comments
+                : [],
+        }));
     });
+
+
+    // ================= INPUT =================
 
     const [input, setInput] = useState("");
 
-    // Save comments whenever comments change
+
+    // ================= SAVE COMMENTS =================
+
     useEffect(() => {
-        localStorage.setItem("comments", JSON.stringify(comments));
+
+        localStorage.setItem(
+            "comments",
+            JSON.stringify(comments)
+        );
+
     }, [comments]);
 
+
+    // ================= POST COMMENT =================
+
     function postComment(postId) {
+
         if (!input.trim()) return;
 
-        setComments((prev) =>
-            prev.map((post) =>
-                post.id === postId
-                    ? {
+        const newComment = {
+            id: Date.now(),
+            text: input.trim(),
+        };
+
+        setComments((prev) => {
+
+            // Check whether post already exists
+            const postExists = prev.some(
+                (post) => post.id === postId
+            );
+
+            // If post exists, add comment
+            if (postExists) {
+
+                return prev.map((post) => {
+
+                    if (post.id !== postId) {
+                        return post;
+                    }
+
+                    return {
                         ...post,
+
                         comments: [
                             ...(Array.isArray(post.comments)
                                 ? post.comments
                                 : []),
-                            {
-                                id: Date.now(),
-                                text: input,
-                            },
-                        ],
-                    }
-                    : post
-            )
-        );
 
+                            newComment,
+                        ],
+                    };
+                });
+            }
+
+            // If post does not exist,
+            // create it with the comment
+            return [
+                ...prev,
+                {
+                    id: postId,
+                    comments: [newComment],
+                },
+            ];
+        });
+
+        // Clear input
         setInput("");
     }
 
-    
 
     return {
         comments,
@@ -54,4 +105,3 @@ export const useCommentPage = () => {
         input,
     };
 };
-
