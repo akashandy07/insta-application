@@ -14,7 +14,6 @@ const MessagePage = () => {
 
 
   const storedUser = JSON.parse(localStorage.getItem("user"));
-e
   const myNotes =
     JSON.parse(localStorage.getItem("notes")) || [];
 

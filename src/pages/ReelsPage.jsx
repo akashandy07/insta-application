@@ -85,7 +85,7 @@ const ReelsPage = () => {
 
     return (
 
-        <div className="w-[400px] mx-auto bg-white h-[100vh] overflow-y-auto">
+        <div className="w-[400px] mx-auto bg-white h-[100vh] overflow-y-auto ">
 
             {/* ================================================= */}
             {/* REELS */}
