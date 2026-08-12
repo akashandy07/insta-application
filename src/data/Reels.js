@@ -1,39 +1,60 @@
-// data/Reels.js
-export const Reels = [  // ✅ Export ARRAY, not function
+import one from "../assets/one.mp4";
+import two from "../assets/two.mp4";
+import three from "../assets/three.mp4";
+import four from "../assets/four.mp4";
+import five from "../assets/five.mp4";
+import sex from "../assets/sex.mp4";
+
+const videos = [
+  one,
+  two,
+  three,
+  four,
+  five,
+  sex
+];
+
+export const reels = [
   {
     id: 1,
     userId: 1,
-    video: "https://example.com/video1.mp4",
-    thumbnail: "https://via.placeholder.com/400",
-    caption: "Travel vlog",
-    likes: 1200,
-    views: 5600
+    reel: videos[Math.floor(Math.random() * videos.length)],
+    likes: 0,
+    comment: 0
   },
   {
     id: 2,
-    userId: 1,
-    video: "https://example.com/video2.mp4",
-    thumbnail: "https://via.placeholder.com/400",
-    caption: "Hiking adventure",
-    likes: 890,
-    views: 3200
+    userId: 2,
+    reel: videos[Math.floor(Math.random() * videos.length)],
+    likes: 0,
+    comment: 0
   },
   {
     id: 3,
-    userId: 2,
-    video: "https://example.com/video3.mp4",
-    thumbnail: "https://via.placeholder.com/400",
-    caption: "React tutorial",
-    likes: 2100,
-    views: 8900
+    userId: 3,
+    reel: videos[Math.floor(Math.random() * videos.length)],
+    likes: 0,
+    comment: 0
   },
   {
     id: 4,
-    userId: 3,
-    video: "https://example.com/video4.mp4",
-    thumbnail: "https://via.placeholder.com/400",
-    caption: "Gym tips",
-    likes: 3400,
-    views: 12500
+    userId: 4,
+    reel: videos[Math.floor(Math.random() * videos.length)],
+    likes: 0,
+    comment: 0
+  },
+  {
+    id: 5,
+    userId: 5,
+    reel: videos[Math.floor(Math.random() * videos.length)],
+    likes: 0,
+    comment: 0
+  },
+  {
+    id: 6,
+    userId: 6,
+    reel: videos[Math.floor(Math.random() * videos.length)],
+    likes: 0,
+    comment: 0
   }
 ];
