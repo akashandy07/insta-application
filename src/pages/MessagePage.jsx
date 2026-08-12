@@ -12,10 +12,9 @@ const MessagePage = () => {
   const [input, setInput] = useState("");
   const navigate = useNavigate();
 
-  // Get logged-in user from localStorage
-  const storedUser = JSON.parse(localStorage.getItem("user"));
 
-  // Get MY NOTES from localStorage
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+e
   const myNotes =
     JSON.parse(localStorage.getItem("notes")) || [];
 
@@ -33,7 +32,7 @@ const MessagePage = () => {
     setNote((prev) => [...prev, input]);
     setInput("");
   }
-   
+
 
   return (
     <>
@@ -91,7 +90,7 @@ const MessagePage = () => {
                 <h1 className="text-sm truncate">
                   {myNotes.length > 0
                     ? myNotes[myNotes.length - 1]?.note ||
-                      myNotes[myNotes.length - 1]
+                    myNotes[myNotes.length - 1]
                     : "Add note"}
                 </h1>
               </div>
@@ -153,7 +152,7 @@ const MessagePage = () => {
       </div>
 
       {/* ================= MESSAGE / REQUEST ================= */}
-      <div className="w-[400px] h-auto mx-auto overflow-x-auto scrollbar-none">
+      <div className="w-[400px] h-auto mx-auto overflow-x-auto scrollbar-none overflow-y-auto">
         <div className="max-w-[380px] mx-auto">
 
           <div className="flex justify-between pt-8">
@@ -198,7 +197,7 @@ const MessagePage = () => {
 
         </div>
       </div>
-     
+
 
     </>
   );

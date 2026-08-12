@@ -22,7 +22,7 @@ const PostPage = () => {
 
 
     return (
-        <div className="w-[400px] mx-auto">
+        <div className="w-[400px] mx-auto overflow-y-auto">
 
             <StoryPage />
 

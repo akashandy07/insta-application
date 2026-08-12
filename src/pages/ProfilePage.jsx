@@ -157,7 +157,7 @@ const ProfilePage = () => {
 
     return (
 
-        <div className="w-[400px] mx-auto min-h-[80vh] bg-white overflow-x-auto scrollbar-none">
+        <div className="w-[400px] mx-auto min-h-[80vh] bg-white overflow-x-auto scrollbar-none overflow-y-auto">
 
             {/* ================================================= */}
             {/* PROFILE HEADER */}
