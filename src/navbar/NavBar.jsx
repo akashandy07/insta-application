@@ -105,7 +105,7 @@ const NavBar = () => {
             {/* BOTTOM NAVIGATION */}
             {/* ================================================= */}
 
-            <div className="fixed bottom-0 w-[400px] h-[68px] max-w-[380px] mx-auto bg-white border-t border-gray-200 z-50 left-[50%] translate-x-[-50%]">
+            <div className="fixed -bottom-1 w-[400px] h-[68px] max-w-[380px] mx-auto bg-white border-t border-gray-200 z-50 left-[50%] translate-x-[-50%]">
 
                 <div className="flex justify-around items-center py-5">
 

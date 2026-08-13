@@ -27,6 +27,7 @@ const ReelsPage = () => {
 
     // Store all video elements
     const videoRefs = useRef([]);
+    const containerRef = useRef(null);
 
     // =================================================
     // AUTO PLAY WHEN SCROLLING
@@ -83,9 +84,35 @@ const ReelsPage = () => {
 
     }, [reelData]);
 
+    // =================================================
+    // AUTO-ADVANCE TO NEXT VIDEO WHEN CURRENT ENDS
+    // =================================================
+    const handleVideoEnded = (index) => {
+        if (index < videoRefs.current.length - 1) {
+            // Scroll to next video
+            const nextVideo = videoRefs.current[index + 1];
+            if (nextVideo) {
+                nextVideo.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                });
+            }
+        }
+    };
+
     return (
 
-        <div className="w-[400px] mx-auto bg-white h-[100vh] overflow-y-auto ">
+        <div ref={containerRef} className="w-[400px] mx-auto bg-white h-[100vh] overflow-y-auto">
+
+            {/* ================================================= */}
+            {/* CLOSE BUTTON - OVERLAPS REELS */}
+            {/* ================================================= */}
+            <button
+                onClick={() => window.history.back()}
+                className="fixed  top-20 left-6 z-50 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full transition-all"
+            >
+                <X size={24} />
+            </button>
 
             {/* ================================================= */}
             {/* REELS */}
@@ -124,8 +151,7 @@ const ReelsPage = () => {
                                         element;
                                 }}
                                 src={reel.reel}
-                              
-                                loop
+                                onEnded={() => handleVideoEnded(index)}
                                 playsInline
                                 onClick={(e) => {
 

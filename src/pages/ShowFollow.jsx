@@ -83,7 +83,7 @@ const ShowFollow = () => {
                                             `/messages/${user.id}`
                                         )
                                     }
-                                    className="px-8 py-1.5 bg-gray-200 text-black font-semibold rounded text-lg w-[120px]"
+                                    className="px-8 py-1.5 bg-gray-200 text-black font-semibold rounded text-sm w-[120px]"
                                 >
 
                                     Message
