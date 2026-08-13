@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
     Plus,
     Heart,
@@ -9,11 +9,13 @@ import {
     Film
 } from "lucide-react";
 
+
 import akash from "../assets/akash.jpeg";
 
 const NavBar = () => {
 
     const location = useLocation();
+    const navigate = useNavigate()
 
     // ================= GET USER =================
 
@@ -53,7 +55,7 @@ const NavBar = () => {
 
                     {/* PLUS */}
 
-                    <div className="cursor-pointer hover:opacity-70 transition">
+                    <div onClick={() => navigate("/PhotoUploadIcon")} className="cursor-pointer hover:opacity-70 transition">
                         <Plus
                             size={24}
                             strokeWidth={2}
@@ -116,11 +118,10 @@ const NavBar = () => {
 
                     <Link
                         to="/PostPage"
-                        className={`rounded-lg transition ${
-                            isActive("/PostPage")
-                                ? "text-black"
-                                : "text-gray-600 hover:text-black"
-                        }`}
+                        className={`rounded-lg transition ${isActive("/PostPage")
+                            ? "text-black"
+                            : "text-gray-600 hover:text-black"
+                            }`}
                     >
 
                         <Home
@@ -142,11 +143,10 @@ const NavBar = () => {
 
                     <Link
                         to="/SearchPage"
-                        className={`rounded-lg transition ${
-                            isActive("/SearchPage")
-                                ? "text-black"
-                                : "text-gray-600 hover:text-black"
-                        }`}
+                        className={`rounded-lg transition ${isActive("/SearchPage")
+                            ? "text-black"
+                            : "text-gray-600 hover:text-black"
+                            }`}
                     >
 
                         <Search
@@ -168,11 +168,10 @@ const NavBar = () => {
 
                     <Link
                         to="/ReelsPage"
-                        className={`rounded-lg transition ${
-                            isActive("/ReelsPage")
-                                ? "text-black"
-                                : "text-gray-600 hover:text-black"
-                        }`}
+                        className={`rounded-lg transition ${isActive("/ReelsPage")
+                            ? "text-black"
+                            : "text-gray-600 hover:text-black"
+                            }`}
                     >
 
                         <Film
@@ -194,11 +193,10 @@ const NavBar = () => {
 
                     <Link
                         to="/messages"
-                        className={`rounded-lg transition ${
-                            isActive("/messages")
-                                ? "text-black"
-                                : "text-gray-600 hover:text-black"
-                        }`}
+                        className={`rounded-lg transition ${isActive("/messages")
+                            ? "text-black"
+                            : "text-gray-600 hover:text-black"
+                            }`}
                     >
 
                         <MessageCircle
@@ -220,19 +218,17 @@ const NavBar = () => {
 
                     <Link
                         to="/UserProfile"
-                        className={`rounded-lg transition ${
-                            isActive("/UserProfile")
-                                ? "text-black"
-                                : "text-gray-600 hover:text-black"
-                        }`}
+                        className={`rounded-lg transition ${isActive("/UserProfile")
+                            ? "text-black"
+                            : "text-gray-600 hover:text-black"
+                            }`}
                     >
 
                         <div
-                            className={`w-8 h-8 rounded-full overflow-hidden border-2 ${
-                                isActive("/UserProfile")
-                                    ? "border-black"
-                                    : "border-gray-300"
-                            }`}
+                            className={`w-8 h-8 rounded-full overflow-hidden border-2 ${isActive("/UserProfile")
+                                ? "border-black"
+                                : "border-gray-300"
+                                }`}
                         >
 
                             <img
