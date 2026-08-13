@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Search, Heart, MessageCircle, X } from "lucide-react";
 
 import { users } from "../data/users";
-import { reels } from "../data/reels";
+import { reels } from "../data/Reels";
 
 import SearchResult from "./SearchResult";
 

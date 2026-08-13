@@ -16,6 +16,7 @@ import PhotoUploadIcon from './pages/PhotoUploadIcon'
 import MyStory from './pages/MyStory'
 
 
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('user'))
 
@@ -75,10 +76,7 @@ const App = () => {
             </ProtectedRoute>} />
 
 
-          {/* <Route path="/CommentPage" element={
-            <ProtectedRoute>
-              <CommentPage />
-            </ProtectedRoute>} /> */}
+         
 
 
           <Route path="/ShowFollow" element={

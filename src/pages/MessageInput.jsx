@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { users } from "../data/users";
-import MessagePage from "./MessagePage";
 import { PhoneCallIcon } from "lucide-react";
 import { VideoIcon } from "lucide-react";
 
@@ -9,9 +8,6 @@ const MessageInput = () => {
   const { id } = useParams();
   const user = users.find((u) => u.id === Number(id));
  
-
-
-
 
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
