@@ -262,6 +262,7 @@ const SearchPage = () => {
                                     <video
                                         src={reel.reel}
                                         loop
+                                        autoPlay
                                         muted
                                         playsInline
                                         className="w-full h-full object-cover cursor-pointer"
