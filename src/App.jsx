@@ -1,21 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import PostPage from './pages/PostPage'
-import MessagePage from './pages/MessagePage'
 import NavBar from './navbar/NavBar'
-import ReelsPage from './pages/ReelsPage'
-import ProfilePage from './pages/ProfilePage'
-import LoginPage from './login/LoginPage'
 import ProtectedRoute from './login/ProtectedRoute'
-import UserProfile from './pages/UserProfile'
-import SearchPage from './pages/SearchPage'
-import SearchResult from './pages/SearchResult'
-import MessageInput from './pages/MessageInput'
-import ShowFollow from './pages/ShowFollow'
-import PhotoUploadIcon from './pages/PhotoUploadIcon'
-import MyStory from './pages/MyStory'
 
-
+// Code Splitting: lazy load all page components
+const PostPage = lazy(() => import('./pages/PostPage'))
+const MessagePage = lazy(() => import('./pages/MessagePage'))
+const ReelsPage = lazy(() => import('./pages/ReelsPage'))
+const ProfilePage = lazy(() => import('./pages/ProfilePage'))
+const LoginPage = lazy(() => import('./login/LoginPage'))
+const UserProfile = lazy(() => import('./pages/UserProfile'))
+const SearchPage = lazy(() => import('./pages/SearchPage'))
+const SearchResult = lazy(() => import('./pages/SearchResult'))
+const MessageInput = lazy(() => import('./pages/MessageInput'))
+const ShowFollow = lazy(() => import('./pages/ShowFollow'))
+const PhotoUploadIcon = lazy(() => import('./pages/PhotoUploadIcon'))
+const MyStory = lazy(() => import('./pages/MyStory'))
+// Simple loading spinner
+function LoadingSpinner() {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-blue-500"></div>
+    </div>
+  )
+}
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('user'))
@@ -25,78 +33,148 @@ const App = () => {
       <BrowserRouter>
         {isLoggedIn && <NavBar />}
         <Routes>
-          <Route path="/" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
-
-          <Route path="/PostPage" element={
-            <ProtectedRoute>
-              <PostPage />
-            </ProtectedRoute>}
+          <Route 
+            path="/" 
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <LoginPage setIsLoggedIn={setIsLoggedIn} />
+              </Suspense>
+            } 
           />
 
-          <Route path="/SearchPage" element={
-            <ProtectedRoute>
-              <SearchPage />
-            </ProtectedRoute>}
-          />
-          <Route path="/ReelsPage" element={
-            <ProtectedRoute>
-              <ReelsPage />
-            </ProtectedRoute>}
-          />
-          <Route path="/ProfilePage" element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>}
+          <Route 
+            path="/PostPage" 
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <PostPage />
+                </Suspense>
+              </ProtectedRoute>
+            }
           />
 
-          <Route path="/ProfilePage/:id" element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>}
-          />
-          <Route path="/UserProfile" element={
-            <ProtectedRoute>
-              <UserProfile />
-            </ProtectedRoute>}
-          />
-          <Route path="/SearchResult" element={
-            <ProtectedRoute>
-              <SearchResult />
-            </ProtectedRoute>}
+          <Route 
+            path="/SearchPage" 
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <SearchPage />
+                </Suspense>
+              </ProtectedRoute>
+            }
           />
 
-          <Route path="/messages" element={
-            <ProtectedRoute>
-              <MessagePage />
-            </ProtectedRoute>} />
+          <Route 
+            path="/ReelsPage" 
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <ReelsPage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/messages/:id" element={
-            <ProtectedRoute>
-              <MessageInput />
-            </ProtectedRoute>} />
+          <Route 
+            path="/ProfilePage" 
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <ProfilePage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
 
+          <Route 
+            path="/ProfilePage/:id" 
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <ProfilePage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
 
-         
+          <Route 
+            path="/UserProfile" 
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <UserProfile />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
 
+          <Route 
+            path="/SearchResult" 
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <SearchResult />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/ShowFollow" element={
-            <ProtectedRoute>
-              <ShowFollow />
-            </ProtectedRoute>} />
+          <Route 
+            path="/messages" 
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <MessagePage />
+                </Suspense>
+              </ProtectedRoute>
+            } 
+          />
 
-          <Route path="/PhotoUploadIcon" element={
-            <ProtectedRoute>
-              <PhotoUploadIcon />
-            </ProtectedRoute>} />
+          <Route 
+            path="/messages/:id" 
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <MessageInput />
+                </Suspense>
+              </ProtectedRoute>
+            } 
+          />
 
-            <Route path="/MyStory" element={
-            <ProtectedRoute>
-              <MyStory />
-            </ProtectedRoute>} />
+          <Route 
+            path="/ShowFollow" 
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <ShowFollow />
+                </Suspense>
+              </ProtectedRoute>
+            } 
+          />
 
+          <Route 
+            path="/PhotoUploadIcon" 
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <PhotoUploadIcon />
+                </Suspense>
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/MyStory" 
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <MyStory />
+                </Suspense>
+              </ProtectedRoute>
+            } 
+          />
 
         </Routes>
-
       </BrowserRouter>
     </>
   )

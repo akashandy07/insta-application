@@ -6,6 +6,7 @@ import { useLikeLogic } from "../custom/LikeLogic";
 import { Heart, MessageCircle, X } from "lucide-react";
 import { useCommentPage } from "../custom/CommentLogics";
 import akash from "../assets/akash.jpeg";
+import { useInView } from 'react-intersection-observer'  // ← ADD THIS
 
 const PostPage = () => {
 
@@ -59,6 +60,8 @@ const PostPage = () => {
     const userAvatar =
         storedUser?.avatar || akash;
 
+
+
     return (
 
         <div className="w-[400px] mx-auto overflow-y-auto">
@@ -70,7 +73,7 @@ const PostPage = () => {
             <div className="max-w-[380px] mx-auto mt-5">
 
                 {postData.map((i) => {
-
+                    const { ref, inView } = useInView({ threshold: 0.2 });
                     const user = getUser(i.userId);
 
                     // ==========================================
@@ -135,13 +138,17 @@ const PostPage = () => {
                             {/* ==========================================
                                 POST IMAGE
                             ========================================== */}
-
-                            <img
-                                src={i.image}
-                                alt={i.caption}
-                                className="w-full h-auto object-cover rounded-lg"
-                            />
-
+                            <div ref={ref} >
+                                {inView ? (
+                                    <img
+                                        src={i.image}
+                                        alt={i.caption}
+                                        className="w-full h-auto object-cover rounded-lg"
+                                    />
+                                ) : (
+                                    <div className="w-full h-96 bg-gray-200 animate-pulse rounded-lg" />
+                                )}
+                            </div>
 
                             {/* ==========================================
                                 LIKE & COMMENT

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
 
 import { useFollowLogics } from "../custom/FollowLogics";
 import { useLikeLogic } from "../custom/LikeLogic";
@@ -15,7 +16,6 @@ import {
 
 import SuggestionPage from "./SuggestionPage";
 
-// ================= DEFAULT AVATAR =================
 import akash from "../assets/akash.jpeg";
 
 const ProfilePage = () => {
@@ -27,6 +27,7 @@ const ProfilePage = () => {
         toggleFollow
     } = useFollowLogics();
 
+
     // ================= URL ID =================
 
     const { id } = useParams();
@@ -35,12 +36,14 @@ const ProfilePage = () => {
 
     const userId = parseInt(id);
 
+
     // ================= POST LIKE =================
 
     const {
         postData,
         likeButton,
     } = useLikeLogic();
+
 
     // ================= POST COMMENTS =================
 
@@ -51,12 +54,14 @@ const ProfilePage = () => {
         input: postInput,
     } = useCommentPage();
 
+
     // ================= REEL LIKE =================
 
     const {
         reelData,
         reelLikeButton,
     } = useReelLikeLogic();
+
 
     // ================= REEL COMMENTS =================
 
@@ -66,6 +71,7 @@ const ProfilePage = () => {
         setInput: setReelInput,
         input: reelInput,
     } = useReelCommentLogic();
+
 
     // ================= STATES =================
 
@@ -79,6 +85,12 @@ const ProfilePage = () => {
     // false = normal
     const [grid, setGrid] = useState(true);
 
+    // Number of items currently rendered
+    const [visiblePosts, setVisiblePosts] = useState(6);
+
+    const [visibleReels, setVisibleReels] = useState(4);
+
+
     // ================= STORED USER =================
 
     const [storedUser, setStoredUser] = useState(() => {
@@ -90,6 +102,7 @@ const ProfilePage = () => {
             ? JSON.parse(savedUser)
             : null;
     });
+
 
     // ================= UPDATE USER =================
 
@@ -126,6 +139,7 @@ const ProfilePage = () => {
 
     }, []);
 
+
     // ================= DEFAULT USER =================
 
     const defaultUser = {
@@ -142,7 +156,6 @@ const ProfilePage = () => {
 
         links: "",
 
-        // YOUR DEFAULT PHOTO
         avatar: akash,
 
         followers: 0,
@@ -152,11 +165,13 @@ const ProfilePage = () => {
         isFollowing: false,
     };
 
+
     // ================= FIND USER =================
 
     const foundUser = data.find(
         (item) => item.id === userId
     );
+
 
     // ================= FINAL USER =================
 
@@ -168,12 +183,13 @@ const ProfilePage = () => {
     ) {
 
         user = {
+
             ...defaultUser,
+
             ...foundUser,
+
             ...storedUser,
 
-            // If localStorage avatar is empty,
-            // use akash.jpeg
             avatar:
                 storedUser.avatar ||
                 foundUser?.avatar ||
@@ -183,11 +199,11 @@ const ProfilePage = () => {
     } else if (foundUser) {
 
         user = {
+
             ...defaultUser,
+
             ...foundUser,
 
-            // If user has no avatar
-            // use akash.jpeg
             avatar:
                 foundUser.avatar ||
                 akash,
@@ -196,11 +212,15 @@ const ProfilePage = () => {
     } else {
 
         user = {
+
             ...defaultUser,
+
             avatar: akash,
+
         };
 
     }
+
 
     // ================= USER POSTS =================
 
@@ -209,6 +229,7 @@ const ProfilePage = () => {
             post.userId === userId
     );
 
+
     // ================= USER REELS =================
 
     const userReels = reelData.filter(
@@ -216,22 +237,28 @@ const ProfilePage = () => {
             reel.userId === userId
     );
 
+
     // ================= TABS =================
 
     const tabs = [
+
         {
             key: "posts",
             label: "POSTS",
         },
+
         {
             key: "reels",
             label: "REELS",
         },
+
         {
             key: "tagged",
             label: "TAGGED",
         },
+
     ];
+
 
     // ================= GET POST COMMENTS =================
 
@@ -245,9 +272,143 @@ const ProfilePage = () => {
         return post?.comments || [];
     }
 
+
+    // =================================================
+    // USE IN VIEW
+    // =================================================
+
+    // POSTS GRID
+
+    const {
+        ref: postsGridRef,
+        inView: postsGridInView
+    } = useInView({
+        threshold: 0.1,
+    });
+
+
+    // POSTS NORMAL
+
+    const {
+        ref: postsNormalRef,
+        inView: postsNormalInView
+    } = useInView({
+        threshold: 0.1,
+    });
+
+
+    // REELS GRID
+
+    const {
+        ref: reelsGridRef,
+        inView: reelsGridInView
+    } = useInView({
+        threshold: 0.1,
+    });
+
+
+    // ================= RESET VISIBLE COUNT =================
+
+    useEffect(() => {
+
+        setVisiblePosts(6);
+
+        setVisibleReels(4);
+
+    }, [userId]);
+
+
+    // ================= LOAD MORE POSTS GRID =================
+
+    useEffect(() => {
+
+        if (
+            activeTab === "posts" &&
+            grid &&
+            postsGridInView &&
+            visiblePosts < getpost.length
+        ) {
+
+            setVisiblePosts((current) =>
+                Math.min(
+                    current + 6,
+                    getpost.length
+                )
+            );
+
+        }
+
+    }, [
+        activeTab,
+        grid,
+        postsGridInView,
+        visiblePosts,
+        getpost.length,
+    ]);
+
+
+    // ================= LOAD MORE POSTS NORMAL =================
+
+    useEffect(() => {
+
+        if (
+            activeTab === "posts" &&
+            !grid &&
+            postsNormalInView &&
+            visiblePosts < getpost.length
+        ) {
+
+            setVisiblePosts((current) =>
+                Math.min(
+                    current + 6,
+                    getpost.length
+                )
+            );
+
+        }
+
+    }, [
+        activeTab,
+        grid,
+        postsNormalInView,
+        visiblePosts,
+        getpost.length,
+    ]);
+
+
+    // ================= LOAD MORE REELS =================
+
+    useEffect(() => {
+
+        if (
+            activeTab === "reels" &&
+            grid &&
+            reelsGridInView &&
+            visibleReels < userReels.length
+        ) {
+
+            setVisibleReels((current) =>
+                Math.min(
+                    current + 4,
+                    userReels.length
+                )
+            );
+
+        }
+
+    }, [
+        activeTab,
+        grid,
+        reelsGridInView,
+        visibleReels,
+        userReels.length,
+    ]);
+
+
     return (
 
         <div className="w-[400px] mx-auto min-h-[80vh] bg-white overflow-x-auto scrollbar-none overflow-y-auto">
+
 
             {/* ================================================= */}
             {/* PROFILE HEADER */}
@@ -257,9 +418,11 @@ const ProfilePage = () => {
 
                 <div className="max-w-[380px] mx-auto pt-8">
 
+
                     {/* PROFILE INFO */}
 
                     <div className="flex gap-10 mb-3 items-center">
+
 
                         {/* PROFILE IMAGE */}
 
@@ -283,11 +446,13 @@ const ProfilePage = () => {
 
                         </div>
 
+
                         {/* COUNTS */}
 
                         <div className="flex-1">
 
                             <div className="flex gap-10">
+
 
                                 {/* POSTS */}
 
@@ -303,6 +468,7 @@ const ProfilePage = () => {
 
                                 </div>
 
+
                                 {/* FOLLOWERS */}
 
                                 <div>
@@ -316,6 +482,7 @@ const ProfilePage = () => {
                                     </p>
 
                                 </div>
+
 
                                 {/* FOLLOWING */}
 
@@ -337,6 +504,7 @@ const ProfilePage = () => {
 
                     </div>
 
+
                     {/* NAME */}
 
                     <div>
@@ -345,11 +513,13 @@ const ProfilePage = () => {
                             {user?.name || "User"}
                         </p>
 
+
                         {/* USERNAME */}
 
                         <p className="text-gray-500 text-xs">
                             @{user?.username || "user"}
                         </p>
+
 
                         {/* PRONOUNS */}
 
@@ -361,11 +531,13 @@ const ProfilePage = () => {
 
                         )}
 
+
                         {/* BIO */}
 
                         <p className="text-gray-700 text-xs mt-1">
                             {user?.bio || "No bio available"}
                         </p>
+
 
                         {/* LINKS */}
 
@@ -379,9 +551,11 @@ const ProfilePage = () => {
 
                     </div>
 
+
                     {/* BUTTONS */}
 
                     <div className="flex pt-6 justify-around">
+
 
                         {/* FOLLOW */}
 
@@ -395,10 +569,13 @@ const ProfilePage = () => {
                                     : "px-8 py-1.5 bg-blue-500 text-white font-semibold rounded text-xs w-[120px]"
                             }
                         >
+
                             {user.isFollowing
                                 ? "Unfollow"
                                 : "Follow"}
+
                         </button>
+
 
                         {/* MESSAGE */}
 
@@ -412,6 +589,7 @@ const ProfilePage = () => {
                         >
                             Message
                         </button>
+
 
                         {/* SUGGESTIONS */}
 
@@ -430,6 +608,7 @@ const ProfilePage = () => {
 
             </div>
 
+
             {/* ================================================= */}
             {/* SUGGESTIONS */}
             {/* ================================================= */}
@@ -437,6 +616,7 @@ const ProfilePage = () => {
             {show && (
                 <SuggestionPage />
             )}
+
 
             {/* ================================================= */}
             {/* TABS */}
@@ -461,10 +641,9 @@ const ProfilePage = () => {
                                     font-semibold
                                     uppercase
                                     tracking-wider
-                                    ${
-                                        activeTab === key
-                                            ? "text-black border-b-2 border-black"
-                                            : "text-gray-600"
+                                    ${activeTab === key
+                                        ? "text-black border-b-2 border-black"
+                                        : "text-gray-600"
                                     }
                                 `}
                             >
@@ -477,6 +656,7 @@ const ProfilePage = () => {
                 </div>
 
             </div>
+
 
             {/* ================================================= */}
             {/* POSTS */}
@@ -494,8 +674,9 @@ const ProfilePage = () => {
 
                             <div className="grid grid-cols-2 gap-4">
 
-                                {getpost.map(
-                                    (p) => (
+                                {getpost
+                                    .slice(0, visiblePosts)
+                                    .map((p) => (
 
                                         <div
                                             key={p.id}
@@ -513,8 +694,15 @@ const ProfilePage = () => {
 
                                         </div>
 
-                                    )
-                                )}
+                                    ))}
+
+
+                                {/* USE IN VIEW */}
+
+                                <div
+                                    ref={postsGridRef}
+                                    className="col-span-2 h-4"
+                                />
 
                             </div>
 
@@ -524,8 +712,9 @@ const ProfilePage = () => {
 
                             <div className="flex flex-col gap-8">
 
-                                {getpost.map(
-                                    (p) => {
+                                {getpost
+                                    .slice(0, visiblePosts)
+                                    .map((p) => {
 
                                         const currentComments =
                                             getPostComments(
@@ -538,6 +727,7 @@ const ProfilePage = () => {
                                                 key={p.id}
                                                 className="border-b border-gray-200 pb-6"
                                             >
+
 
                                                 {/* POST USER */}
 
@@ -580,6 +770,7 @@ const ProfilePage = () => {
 
                                                 </div>
 
+
                                                 {/* POST IMAGE */}
 
                                                 <img
@@ -591,9 +782,11 @@ const ProfilePage = () => {
                                                     className="w-[370px] h-[70vh] object-cover rounded-lg cursor-pointer"
                                                 />
 
+
                                                 {/* LIKE + COMMENT */}
 
                                                 <div className="flex gap-5 pt-3">
+
 
                                                     {/* LIKE */}
 
@@ -626,6 +819,7 @@ const ProfilePage = () => {
 
                                                     </div>
 
+
                                                     {/* COMMENT */}
 
                                                     <div
@@ -653,13 +847,15 @@ const ProfilePage = () => {
 
                                                 </div>
 
-                                                {/* ================= COMMENT POPUP ================= */}
+
+                                                {/* COMMENT POPUP */}
 
                                                 {hide === p.id && (
 
                                                     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/30">
 
                                                         <div className="bg-white w-[400px] h-[60vh] rounded-t-xl p-5 shadow-lg">
+
 
                                                             {/* HEADER */}
 
@@ -678,6 +874,7 @@ const ProfilePage = () => {
                                                                 </button>
 
                                                             </div>
+
 
                                                             {/* COMMENTS */}
 
@@ -739,6 +936,7 @@ const ProfilePage = () => {
 
                                                             </div>
 
+
                                                             {/* INPUT */}
 
                                                             <div className="flex gap-2 mt-4">
@@ -776,6 +974,7 @@ const ProfilePage = () => {
 
                                                 )}
 
+
                                                 {/* CAPTION */}
 
                                                 <div className="pt-2">
@@ -797,6 +996,7 @@ const ProfilePage = () => {
 
                                                 </div>
 
+
                                                 {/* TIMESTAMP */}
 
                                                 <div className="pt-2">
@@ -811,8 +1011,15 @@ const ProfilePage = () => {
 
                                         );
 
-                                    }
-                                )}
+                                    })}
+
+
+                                {/* USE IN VIEW */}
+
+                                <div
+                                    ref={postsNormalRef}
+                                    className="h-4"
+                                />
 
                             </div>
 
@@ -834,6 +1041,7 @@ const ProfilePage = () => {
 
             )}
 
+
             {/* ================================================= */}
             {/* REELS */}
             {/* ================================================= */}
@@ -850,8 +1058,9 @@ const ProfilePage = () => {
 
                             <div className="grid grid-cols-2 gap-1 py-2">
 
-                                {userReels.map(
-                                    (reel) => (
+                                {userReels
+                                    .slice(0, visibleReels)
+                                    .map((reel) => (
 
                                         <div
                                             key={reel.id}
@@ -871,8 +1080,15 @@ const ProfilePage = () => {
 
                                         </div>
 
-                                    )
-                                )}
+                                    ))}
+
+
+                                {/* USE IN VIEW */}
+
+                                <div
+                                    ref={reelsGridRef}
+                                    className="col-span-2 h-4"
+                                />
 
                             </div>
 
@@ -882,8 +1098,9 @@ const ProfilePage = () => {
 
                             <div className="fixed inset-0 flex flex-col bg-black w-[400px] z-50 mx-auto right-0 h-[105vh]">
 
-                                {userReels.map(
-                                    (reel) => {
+                                {userReels
+                                    .slice(0, visibleReels)
+                                    .map((reel) => {
 
                                         const currentReelComments =
                                             reelComments.find(
@@ -897,6 +1114,7 @@ const ProfilePage = () => {
                                                 key={reel.id}
                                                 className="relative w-full h-[100vh] bg-black"
                                             >
+
 
                                                 {/* VIDEO */}
 
@@ -923,6 +1141,7 @@ const ProfilePage = () => {
                                                     className="w-[400px] h-[100vh] object-cover cursor-pointer"
                                                 />
 
+
                                                 {/* BACK */}
 
                                                 <button
@@ -934,9 +1153,11 @@ const ProfilePage = () => {
                                                     Back
                                                 </button>
 
+
                                                 {/* RIGHT SIDE */}
 
                                                 <div className="absolute right-8 bottom-20 flex flex-col items-center gap-5">
+
 
                                                     {/* LIKE */}
 
@@ -972,6 +1193,7 @@ const ProfilePage = () => {
 
                                                     </div>
 
+
                                                     {/* COMMENT */}
 
                                                     <div className="flex flex-col items-center">
@@ -1003,6 +1225,7 @@ const ProfilePage = () => {
                                                     </div>
 
                                                 </div>
+
 
                                                 {/* USER INFO */}
 
@@ -1042,127 +1265,130 @@ const ProfilePage = () => {
 
                                                 </div>
 
+
                                                 {/* REEL COMMENT POPUP */}
 
                                                 {hide ===
                                                     `reel-${reel.id}` && (
 
-                                                    <div className="fixed inset-0 z-50 flex items-end justify-center">
+                                                        <div className="fixed inset-0 z-50 flex items-end justify-center">
 
-                                                        <div className="bg-white w-[400px] h-[60vh] rounded-t-xl p-5">
+                                                            <div className="bg-white w-[400px] h-[60vh] rounded-t-xl p-5">
 
-                                                            {/* HEADER */}
 
-                                                            <div className="flex items-center justify-between border-b pb-3">
+                                                                {/* HEADER */}
 
-                                                                <h2 className="text-base font-bold">
-                                                                    Comments
-                                                                </h2>
+                                                                <div className="flex items-center justify-between border-b pb-3">
 
-                                                                <button
-                                                                    onClick={() =>
-                                                                        setHide(
-                                                                            null
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <X size={22} />
-                                                                </button>
+                                                                    <h2 className="text-base font-bold">
+                                                                        Comments
+                                                                    </h2>
 
-                                                            </div>
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            setHide(
+                                                                                null
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <X size={22} />
+                                                                    </button>
 
-                                                            {/* COMMENTS */}
+                                                                </div>
 
-                                                            <div className="mt-4 h-[40vh] overflow-y-auto">
 
-                                                                {currentReelComments.length > 0 ? (
+                                                                {/* COMMENTS */}
 
-                                                                    currentReelComments.map(
-                                                                        (comment) => (
+                                                                <div className="mt-4 h-[40vh] overflow-y-auto">
 
-                                                                            <div
-                                                                                key={
-                                                                                    comment.id
-                                                                                }
-                                                                                className="flex items-center gap-3 py-3 border-b"
-                                                                            >
+                                                                    {currentReelComments.length > 0 ? (
 
-                                                                                <img
-                                                                                    src={
-                                                                                        storedUser?.avatar ||
-                                                                                        akash
+                                                                        currentReelComments.map(
+                                                                            (comment) => (
+
+                                                                                <div
+                                                                                    key={
+                                                                                        comment.id
                                                                                     }
-                                                                                    alt={
-                                                                                        storedUser?.username ||
-                                                                                        "User"
-                                                                                    }
-                                                                                    className="w-9 h-9 rounded-full object-cover"
-                                                                                />
+                                                                                    className="flex items-center gap-3 py-3 border-b"
+                                                                                >
 
-                                                                                <p className="text-xs">
-                                                                                    {
-                                                                                        comment.text
-                                                                                    }
-                                                                                </p>
+                                                                                    <img
+                                                                                        src={
+                                                                                            storedUser?.avatar ||
+                                                                                            akash
+                                                                                        }
+                                                                                        alt={
+                                                                                            storedUser?.username ||
+                                                                                            "User"
+                                                                                        }
+                                                                                        className="w-9 h-9 rounded-full object-cover"
+                                                                                    />
 
-                                                                            </div>
+                                                                                    <p className="text-xs">
+                                                                                        {
+                                                                                            comment.text
+                                                                                        }
+                                                                                    </p>
 
+                                                                                </div>
+
+                                                                            )
                                                                         )
-                                                                    )
 
-                                                                ) : (
+                                                                    ) : (
 
-                                                                    <p className="text-gray-500 text-xs">
-                                                                        No comments yet
-                                                                    </p>
+                                                                        <p className="text-gray-500 text-xs">
+                                                                            No comments yet
+                                                                        </p>
 
-                                                                )}
+                                                                    )}
 
-                                                            </div>
+                                                                </div>
 
-                                                            {/* INPUT */}
 
-                                                            <div className="flex gap-2 mt-4">
+                                                                {/* INPUT */}
 
-                                                                <input
-                                                                    type="text"
-                                                                    placeholder="Add a comment..."
-                                                                    value={
-                                                                        reelInput
-                                                                    }
-                                                                    onChange={(e) =>
-                                                                        setReelInput(
-                                                                            e.target.value
-                                                                        )
-                                                                    }
-                                                                    className="flex-1 border rounded-lg px-3 py-2 outline-none text-sm"
-                                                                />
+                                                                <div className="flex gap-2 mt-4">
 
-                                                                <button
-                                                                    onClick={() =>
-                                                                        postReelComment(
-                                                                            reel.id
-                                                                        )
-                                                                    }
-                                                                    className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm"
-                                                                >
-                                                                    Post
-                                                                </button>
+                                                                    <input
+                                                                        type="text"
+                                                                        placeholder="Add a comment..."
+                                                                        value={
+                                                                            reelInput
+                                                                        }
+                                                                        onChange={(e) =>
+                                                                            setReelInput(
+                                                                                e.target.value
+                                                                            )
+                                                                        }
+                                                                        className="flex-1 border rounded-lg px-3 py-2 outline-none text-sm"
+                                                                    />
+
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            postReelComment(
+                                                                                reel.id
+                                                                            )
+                                                                        }
+                                                                        className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm"
+                                                                    >
+                                                                        Post
+                                                                    </button>
+
+                                                                </div>
 
                                                             </div>
 
                                                         </div>
 
-                                                    </div>
-
-                                                )}
+                                                    )}
 
                                             </div>
 
                                         );
 
-                                    }
-                                )}
+                                    })}
 
                             </div>
 
@@ -1183,6 +1409,7 @@ const ProfilePage = () => {
                 </div>
 
             )}
+
 
             {/* ================================================= */}
             {/* TAGGED */}
